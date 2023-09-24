@@ -66,6 +66,11 @@ export const userSlice = createSlice({
         };
         state.userLoading = false;
       })
+      .addCase(fetchUserInfo.rejected, (state) => {
+        initUserStore();
+        localStorage.setItem('userStatus', 'logout');
+        window.location.href = '/login'
+      })
       .addCase(getToken.fulfilled, (state, action) => {
         localStorage.setItem('userStatus', 'login');
         state.token = action.payload;
