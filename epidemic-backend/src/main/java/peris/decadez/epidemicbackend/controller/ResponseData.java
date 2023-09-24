@@ -1,6 +1,7 @@
 package peris.decadez.epidemicbackend.controller;
 
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class ResponseData<T> {
@@ -13,4 +14,9 @@ public class ResponseData<T> {
     this.message = message;
     this.data = data;
   }
+
+  public static ResponseData<?> of(final int coe, final String message, final Object n) {
+    return new ResponseData<>(coe, message, n);
+  }
+
 }

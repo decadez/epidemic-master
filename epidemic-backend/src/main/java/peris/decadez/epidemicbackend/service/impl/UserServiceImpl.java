@@ -53,6 +53,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
   }
 
   public List<User> findUserByMap(Map<String, Object> columnsMap) {
-    return userMapper.selectByMap(columnsMap);
+
+    return listByMap(columnsMap);
+
+//    return userMapper.selectByMap(columnsMap);
   }
 }
