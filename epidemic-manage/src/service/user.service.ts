@@ -1,7 +1,5 @@
 import request from '@/utils/request';
 
-const baseUrl = 'http://localhost:8080';
-
 export async function login(params: {
   username?: string;
   email?: string;

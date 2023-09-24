@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import peris.decadez.epidemicbackend.entity.Enum.GenderEnum;
 import peris.decadez.epidemicbackend.entity.User;
 import peris.decadez.epidemicbackend.service.TokenService;
+import peris.decadez.epidemicbackend.service.UserService;
 import peris.decadez.epidemicbackend.service.impl.UserServiceImpl;
 
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class ApiController {
   @Autowired
-  private UserServiceImpl userServiceImpl;
+  private UserService userService;
 
   @Autowired
   private TokenService tokenService;
@@ -28,12 +29,12 @@ public class ApiController {
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody RegistrationRequest registrationRequest) {
     // 检查用户名是否唯一
-    if (!userServiceImpl.findUserByMap(Map.of("username", registrationRequest.username)).isEmpty()) {
+    if (!userService.listByMap(Map.of("username", registrationRequest.username)).isEmpty()) {
       return new ResponseEntity<>("The username already exists.", HttpStatus.CONFLICT);
     }
 
     // 检查email是否唯一
-    if (!userServiceImpl.findUserByMap(Map.of("email", registrationRequest.email)).isEmpty()) {
+    if (!userService.listByMap(Map.of("email", registrationRequest.email)).isEmpty()) {
       return new ResponseEntity<>("The username already exists.", HttpStatus.CONFLICT);
     }
 
@@ -47,7 +48,7 @@ public class ApiController {
     user.setAge(18);
     user.setSex(GenderEnum.FEMALE);
 
-    userServiceImpl.save(user);
+    userService.save(user);
     return new ResponseEntity<>("User registered successfully.", HttpStatus.OK);
   }
 
@@ -59,7 +60,7 @@ public class ApiController {
     currentUser.setPassword(user.getPassword());
     JSONObject jsonObject = new JSONObject();
 
-    User loginUser = userServiceImpl.login(currentUser);
+    User loginUser = userService.login(currentUser);
     if (loginUser != null) {
       String token = tokenService.getToken(loginUser);
       jsonObject.put("token", token);
