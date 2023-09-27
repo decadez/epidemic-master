@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<?> error(MethodArgumentNotValidException err) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), Objects.requireNonNull(err.getFieldError()).getDefaultMessage(), "{}"));
+            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), String.format("%s.%s: %s", err.getObjectName(), err.getFieldError().getField(), err.getFieldError().getDefaultMessage()), "{}"));
   }
 
   @ExceptionHandler(value = Exception.class)
