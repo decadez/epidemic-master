@@ -5,8 +5,6 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
-import peris.decadez.epidemicbackend.entity.Enum.MessageNature;
-
 
 import java.io.Serial;
 import java.io.Serializable;

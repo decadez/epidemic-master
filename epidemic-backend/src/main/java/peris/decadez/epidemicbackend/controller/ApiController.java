@@ -3,10 +3,14 @@ package peris.decadez.epidemicbackend.controller;
 import cn.hutool.json.JSONObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import peris.decadez.epidemicbackend.dto.Book;
 import peris.decadez.epidemicbackend.entity.Enum.GenderEnum;
 import peris.decadez.epidemicbackend.entity.User;
 import peris.decadez.epidemicbackend.service.MessageLeaveService;
@@ -15,6 +19,7 @@ import peris.decadez.epidemicbackend.service.UserService;
 
 import java.util.Map;
 
+@Validated
 @RestController
 @RequestMapping("/api")
 public class ApiController {
@@ -71,6 +76,17 @@ public class ApiController {
       return new ResponseData<>(200, "success", jsonObject);
     }
     return new ResponseData<>(401, "failed", false);
+  }
+
+  @PostMapping(value = "/nn")
+  public ResponseEntity<?> n(@RequestBody @Validated Book b) {
+    return ResponseEntity.ok(b);
+  }
+
+  @GetMapping(value = "/nn")
+  public ResponseEntity<?> n(@RequestParam(value = "name")
+                               @NotBlank(message = "{book.name}") final String name) {
+    return ResponseEntity.ok(name);
   }
 
   public static class RegistrationRequest {
