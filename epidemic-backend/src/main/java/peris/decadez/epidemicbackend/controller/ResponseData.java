@@ -1,7 +1,6 @@
 package peris.decadez.epidemicbackend.controller;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class ResponseData<T> {
