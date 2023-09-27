@@ -3,17 +3,15 @@ package peris.decadez.epidemicbackend.controller;
 import cn.hutool.json.JSONObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import peris.decadez.epidemicbackend.entity.Enum.GenderEnum;
 import peris.decadez.epidemicbackend.entity.User;
+import peris.decadez.epidemicbackend.service.MessageLeaveService;
 import peris.decadez.epidemicbackend.service.TokenService;
 import peris.decadez.epidemicbackend.service.UserService;
-import peris.decadez.epidemicbackend.service.impl.UserServiceImpl;
 
 import java.util.Map;
 
@@ -25,6 +23,9 @@ public class ApiController {
 
   @Autowired
   private TokenService tokenService;
+
+  @Autowired
+  private MessageLeaveService messageLeaveService;
 
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody RegistrationRequest registrationRequest) {
@@ -79,4 +80,41 @@ public class ApiController {
     public String password;
     public String phone;
   }
+//  @PostMapping("/message/create")
+//  public ResponseEntity<String> createMessage(@RequestBody @Validated MessageDto messageDto){
+//    //将留言信息保存到数据库中
+//    messageDto
+//
+//    if (messageLeave == null || messageLeave.getContent() == null || messageLeave.getTitle() == null) {
+//      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//    }
+//    // 调用Service层方法，实现事务控制和真正的数据处理逻辑
+//    messageLeaveService.createMessageLeave(messageDto);
+//    return new ResponseEntity<>(HttpStatus.OK);
+//  }
+
+
+//  @Data
+//  public class CreateOrderDTO {
+//
+//    @NotNull(message = "订单号不能为空")
+//    private String orderId;
+//    @NotNull(message = "订单金额不能为空")
+//    @Min(value = 1, message = "订单金额不能小于0")
+//    private Integer amount;
+//    @Pattern(regexp = "^1[3|4|5|7|8][0-9]{9}$", message = "用户手机号不合法")
+//    private String mobileNo;
+//    private String orderType;
+//    private String status;
+//  }
+
+
+
 }
+
+
+
+
+
+
+
