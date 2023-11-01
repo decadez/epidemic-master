@@ -27,12 +27,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     // 从 http 请求头中取出 token
     String token = request.getHeader("token");
     // 如果不是映射到方法直接通过
-    if(!(handler instanceof HandlerMethod)){
+    if(!(handler instanceof HandlerMethod handlerMethod)) {
       return true;
     }
-    HandlerMethod handlerMethod = (HandlerMethod)handler;
     Method method = handlerMethod.getMethod();
-    // 检查是否有passtoken注释，有则跳过认证
+    // 检查是否有pass-token注释，有则跳过认证
     if (method.isAnnotationPresent(PassToken.class)) {
       PassToken passToken = method.getAnnotation(PassToken.class);
       if (passToken.required()) {
