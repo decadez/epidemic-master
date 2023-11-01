@@ -73,9 +73,9 @@ public class ApiController {
       Cookie cookie = new Cookie("token", token);
       cookie.setPath("/");
       response.addCookie(cookie);
-      return new ResponseData<>(200, "success", jsonObject);
+      return new ResponseData<>(200, true, jsonObject);
     }
-    return new ResponseData<>(401, "failed", false);
+    return new ResponseData<>(401, false, false);
   }
 
   @PostMapping(value = "/nn")

@@ -20,28 +20,19 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<?> error(MethodArgumentNotValidException err) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), String.format("%s.%s: %s", err.getObjectName(), err.getFieldError().getField(), err.getFieldError().getDefaultMessage()), "{}"));
+            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), false, null));
   }
 
   @ExceptionHandler(value = Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<?> error(Exception err) {
-    return ResponseEntity.ok(ResponseData.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), err.getMessage(), "{}"));
+    return ResponseEntity.ok(ResponseData.of(HttpStatus.INTERNAL_SERVER_ERROR.value(),  false, null));
   }
 
   @ExceptionHandler(value = ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<?> error(ConstraintViolationException err) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(),err.getMessage(),"{}"));
-  }
-
-
-  @ExceptionHandler({ CustomException.class })
-  public ResponseData<String> customExceptionHandler(Exception e) {
-    return new ResponseData<>(500, e.getMessage(), null);
-  }
-
-  private class CustomException extends Exception {
+            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), false,null));
   }
 }
