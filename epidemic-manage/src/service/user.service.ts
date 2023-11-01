@@ -29,7 +29,7 @@ export async function getUserInfo() {
 export async function editUser(user: any) {
   const res = await request(`/user/edit`, {
     method: "POST",
-    params: user,
+    data: user,
   });
   if (res) {
     return res;
