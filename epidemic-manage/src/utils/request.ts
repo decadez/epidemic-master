@@ -42,7 +42,7 @@ request.interceptors.response.use(async (response) => {
   }
   switch (code) {
     case StatusCode.ERROR:
-      window.location.href = '/login';
+      // window.location.href = '/login';
       localStorage.setItem('userStatus', 'logout');
       Message.error(errorMessage);
       return

@@ -9,7 +9,9 @@ import peris.decadez.epidemicbackend.entity.Notice;
 import peris.decadez.epidemicbackend.mapper.NoticeMapper;
 import peris.decadez.epidemicbackend.service.NoticeService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> implements NoticeService {
@@ -21,6 +23,17 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
   @Override
   public List<Notice> getNoticeList() {
     return noticeMapper.selectList(null);
+  }
+
+  @Override
+  public List<Notice> getNoticeListByUserId(Long userId) {
+    Map<String, Object> columnsMap = new HashMap<>();
+    columnsMap.put("user_id", userId);
+    List<Notice> noticeList = noticeMapper.selectByMap(columnsMap);
+    if (!noticeList.isEmpty()) {
+      return noticeList;
+    }
+    return null;
   }
 
   @Override
