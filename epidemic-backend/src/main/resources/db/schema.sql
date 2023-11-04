@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS health;
-DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS notice;
+DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -13,16 +13,17 @@ CREATE TABLE user (
     phone CHAR(11) default NULL,
     address VARCHAR(100) default NULL,
     password VARCHAR(100) NOT NULL,
-    create_at timestamp DEFAULT CURRENT_TIMESTAMP
+    create_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    edit_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE notice (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT, FOREIGN KEY (user_id) REFERENCES user(id),
     title VARCHAR(20) default null,
-    imgUrl VARCHAR(100) default NULL,
+    img_url VARCHAR(100) default NULL,
     content VARCHAR(100) default NULL,
     status ENUM('CLOSE','OPEN', 'NULL' ) default null,
-    creator VARCHAR(20) default null,
     create_at timestamp DEFAULT CURRENT_TIMESTAMP,
     edit_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
@@ -35,5 +36,6 @@ CREATE TABLE health (
     has_contact_history BOOLEAN NOT NULL DEFAULT FALSE,
     contact_people VARCHAR(100) DEFAULT '',
     FOREIGN KEY(user_id) REFERENCES user(id),
-    create_at timestamp DEFAULT CURRENT_TIMESTAMP
+    create_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    edit_at timestamp DEFAULT CURRENT_TIMESTAMP
 );

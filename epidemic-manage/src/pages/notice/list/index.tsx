@@ -16,6 +16,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import './mock';
 import { getColumns } from './constants';
+import { getNoticeList } from '@/service/notice.service';
 
 const { Title } = Typography;
 export const ContentType = ['图文', '横版短视频', '竖版短视频'];
@@ -47,6 +48,7 @@ function SearchTable(props) {
   }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
   function fetchData() {
+    getNoticeList();
     const { current, pageSize } = pagination;
     setLoading(true);
     request.get('/api/list', {

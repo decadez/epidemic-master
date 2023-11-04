@@ -36,4 +36,8 @@ public class User implements Serializable {
 
   @TableField(fill = FieldFill.INSERT)
   private Timestamp createAt;
+
+  @TableField(fill = FieldFill.UPDATE)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private Timestamp editAt;
 }

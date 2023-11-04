@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import peris.decadez.epidemicbackend.annotation.UserLoginToken;
 import peris.decadez.epidemicbackend.entity.User;
 import peris.decadez.epidemicbackend.service.TokenService;
+import peris.decadez.epidemicbackend.service.UserService;
 import peris.decadez.epidemicbackend.service.impl.UserServiceImpl;
 import peris.decadez.epidemicbackend.utils.TokenUtil;
 
@@ -13,7 +14,7 @@ import peris.decadez.epidemicbackend.utils.TokenUtil;
 @RequestMapping("/user")
 public class UserController {
   @Autowired
-  private UserServiceImpl userServiceImpl;
+  private UserService userService;
 
   @Autowired
   private TokenService tokenService;
@@ -23,7 +24,7 @@ public class UserController {
   public ResponseData<?> edit(@RequestBody User user, HttpServletResponse response) {
     Long userId = Long.valueOf(TokenUtil.getTokenUserId());
     user.setId(userId);
-    userServiceImpl.updateById(user);
+    userService.updateById(user);
     return new ResponseData<>(200, true, true);
   }
 
@@ -31,6 +32,6 @@ public class UserController {
   @GetMapping("/info")
   public ResponseData<?> info(HttpServletResponse response) {
     Long userId = Long.valueOf(TokenUtil.getTokenUserId());
-    return new ResponseData<>(200, true, userServiceImpl.findUserById(userId));
+    return new ResponseData<>(200, true, userService.findUserById(userId));
   }
 }
