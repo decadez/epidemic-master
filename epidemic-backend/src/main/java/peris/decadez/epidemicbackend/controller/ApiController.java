@@ -75,7 +75,7 @@ public class ApiController {
       response.addCookie(cookie);
       return new ResponseData<>(200, true, jsonObject);
     }
-    return new ResponseData<>(401, false, false);
+    return ResponseData.of(401, false, null, "用户不存在");
   }
 
   @PostMapping(value = "/nn")

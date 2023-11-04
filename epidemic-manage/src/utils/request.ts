@@ -1,7 +1,8 @@
 import Qs from 'query-string'
-import { extend } from 'umi-request'
+import { extend } from 'umi-request';
+import { Message } from '@arco-design/web-react';
 
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'http://localhost:8080';
 
 enum StatusCode {
   SUCCESS = 200,
@@ -19,47 +20,47 @@ interface ResponseStructure {
   errorMessage?: string
 }
 
-const accessToken = JSON.parse(localStorage.getItem('persist:root'))?.token;
+const accessToken = JSON.parse(localStorage.getItem('persist:root'))?.token || '';
 
 const request = extend({
   prefix: baseUrl,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     token: accessToken.substring(1, accessToken.length - 1),
   },
   paramsSerializer(params) {
     return Qs.stringify(params, { arrayFormat: 'bracket' })
   },
-  // 错误处理
-  errorHandler: (error: any) => {
-    const { response } = error
-    if (response) {
-      const { status, statusText, data } = response
-      const { success, code, errorMessage } =
-        data as ResponseStructure
-      if (success) {
-        return
-      }
-      switch (code) {
-        case StatusCode.ERROR:
-          return
-        case StatusCode.NOT_FOUND:
-          console.warn(errorMessage)
-          return
-        case StatusCode.UNAUTHORIZED:
-          console.error(errorMessage)
-          return
-        case StatusCode.FORBIDDEN:
-          return
-        case StatusCode.TIMEOUT:
-          return
-        default:
-          return
-      }
-    } else {
-      console.error(error)
-    }
-  },
 })
 
-export default request;
+request.interceptors.response.use(async (response) => {
+  const { success, data, code, errorMessage } = (await response
+    .clone()
+    .json()) as ResponseStructure
+  if (success) {
+    return response;
+  }
+  switch (code) {
+    case StatusCode.ERROR:
+      window.location.href = '/login';
+      localStorage.setItem('userStatus', 'logout');
+      Message.error(errorMessage);
+      return
+    case StatusCode.NOT_FOUND:
+      Message.error(errorMessage);
+      return
+    case StatusCode.UNAUTHORIZED:
+      Message.error(errorMessage);
+      return
+    case StatusCode.FORBIDDEN:
+      Message.error(errorMessage);
+      return
+    case StatusCode.TIMEOUT:
+      Message.error(errorMessage);
+      return
+    default:
+      return response;
+  }
+})
+
+export default request

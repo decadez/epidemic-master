@@ -20,19 +20,19 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<?> error(MethodArgumentNotValidException err) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), false, null));
+              .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), false, null, err.getMessage()));
   }
 
   @ExceptionHandler(value = Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<?> error(Exception err) {
-    return ResponseEntity.ok(ResponseData.of(HttpStatus.INTERNAL_SERVER_ERROR.value(),  false, null));
+    return ResponseEntity.ok(ResponseData.of(HttpStatus.INTERNAL_SERVER_ERROR.value(),  false, null, err.getMessage()));
   }
 
   @ExceptionHandler(value = ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<?> error(ConstraintViolationException err) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), false,null));
+            .body(ResponseData.of(HttpStatus.BAD_REQUEST.value(), false,null, err.getMessage()));
   }
 }
