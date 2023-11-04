@@ -51,7 +51,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         try {
           userId = TokenUtil.getTokenUserId();
         } catch (JWTDecodeException j) {
-          throw new RuntimeException("401");
+          throw new RuntimeException("用户不存在，请重新登录");
         }
         User user = userService.findUserById(Long.valueOf(userId));
         if (user == null) {
@@ -59,7 +59,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         // 验证 token
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
-        try {
+        try
+        {
           jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
           throw new RuntimeException("请重新登陆");

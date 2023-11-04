@@ -26,4 +26,8 @@ public class ResponseData<T> {
   public static ResponseData<?> of(final int code, final boolean success, final Object data) {
     return new ResponseData<>(code, success, data);
   }
+
+  public static ResponseData<?> of(final int code, final boolean success, final Object data, String errorMessage) {
+    return new ResponseData<>(code, success, data, errorMessage);
+  }
 }

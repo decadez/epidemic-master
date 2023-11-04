@@ -18,6 +18,7 @@ import { login } from '@/service/user.service';
 import { getToken } from '@/store/reducer/userSlice';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { useHistory } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
@@ -43,8 +44,8 @@ export default function LoginForm() {
     setLoading(true);
     formRef.current.validate().then((values) => {
       dispatch(getToken(values))
-        .then((token) => {
-          if (token) {
+        .then((res) => {
+          if (!isEmpty(res?.payload)) {
             afterLoginSuccess(values);
           } else {
             setErrorMessage(t['login.form.login.errMsg']);
@@ -70,7 +71,7 @@ export default function LoginForm() {
     <div className={styles['login-form-wrapper']}>
       <div className={styles['login-form-title']}>{t['login.form.title']}</div>
       <div className={styles['login-form-sub-title']}>
-        {t['login.form.title']}
+        简洁，高效，美观
       </div>
       <div className={styles['login-form-error-msg']}>{errorMessage}</div>
       <Form className={styles['login-form']} layout="vertical" ref={formRef}>

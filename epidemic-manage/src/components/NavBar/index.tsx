@@ -34,7 +34,7 @@ import styles from './style/index.module.less';
 import defaultLocale from '@/locale';
 import useStorage from '@/utils/useStorage';
 import { generatePermission } from '@/routes';
-import { initUserStore } from '@/store/reducer/userSlice';
+import { logout } from '@/store/reducer/userSlice';
 import { useHistory } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 
@@ -43,20 +43,13 @@ function Navbar({ show }: { show: boolean }) {
   const { userInfo, userLoading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const [_, setUserStatus] = useStorage('userStatus');
   const [role, setRole] = useStorage('userRole', 'admin');
 
   const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
 
-  function logout() {
-    window.location.href = "/login";
-    setUserStatus('logout');
-    dispatch(initUserStore());
-  }
-
   function onMenuItemClick(key) {
     if (key === 'logout') {
-      logout();
+      dispatch(logout());
     } else {
       if (key === 'setting') {
         history.push('/user/setting')
