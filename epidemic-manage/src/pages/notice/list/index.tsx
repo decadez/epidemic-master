@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   Table,
   Card,
@@ -6,68 +6,68 @@ import {
   Button,
   Space,
   Typography,
-} from '@arco-design/web-react';
-import PermissionWrapper from '@/components/PermissionWrapper';
-import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
-import request from 'axios';
-import useLocale from '@/utils/useLocale';
-import SearchForm from './form';
-import locale from './locale';
-import styles from './style/index.module.less';
-import './mock';
-import { getColumns } from './constants';
-import { getNoticeList } from '@/service/notice.service';
+} from '@arco-design/web-react'
+import PermissionWrapper from '@/components/PermissionWrapper'
+import useLocale from '@/utils/useLocale'
+import SearchForm from './form'
+import locale from './locale'
+import styles from './style/index.module.less'
+import './mock'
+import { getColumns } from './constants'
+import { getNoticeList } from '@/service/notice.service'
 
-const { Title } = Typography;
-export const ContentType = ['图文', '横版短视频', '竖版短视频'];
-export const FilterType = ['规则筛选', '人工'];
-export const Status = ['已上线', '未上线'];
+const { Title } = Typography
+export const ContentType = ['图文', '横版短视频', '竖版短视频']
+export const FilterType = ['规则筛选', '人工']
 
 function SearchTable(props) {
-  const t = useLocale(locale);
+  const t = useLocale(locale)
 
   const tableCallback = async (record, type) => {
-    console.log(record, type);
-  };
+    console.log(record, type)
+  }
 
-  const columns = useMemo(() => getColumns(t, tableCallback), [t]);
+  const columns = useMemo(() => getColumns(t, tableCallback), [t])
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
   const [pagination, setPatination] = useState<PaginationProps>({
     sizeCanChange: true,
     showTotal: true,
     pageSize: 10,
     current: 1,
     pageSizeChangeResetCurrent: true,
-  });
-  const [loading, setLoading] = useState(true);
-  const [formParams, setFormParams] = useState({});
+  })
+  const [loading, setLoading] = useState(true)
+  const [formParams, setFormParams] = useState<{
+    createAt?: [string, string]
+    title?: string
+    status?: string[]
+  }>({})
 
   useEffect(() => {
-    fetchData();
-  }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
+    fetchData()
+  }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)])
 
-  function fetchData() {
-    getNoticeList();
-    const { current, pageSize } = pagination;
-    setLoading(true);
-    request.get('/api/list', {
-        params: {
-          page: current,
-          pageSize,
-          ...formParams,
-        },
-      })
-      .then((res) => {
-        setData(res.data.list);
-        setPatination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        });
-        setLoading(false);
-      });
+  const fetchData = async () => {
+    const { current, pageSize } = pagination
+    const {title, createAt, status } = formParams;
+    setLoading(true)
+    const res = await getNoticeList({
+      page: current,
+      pageSize,
+      title,
+      start: createAt?.[0],
+      end: createAt?.[1],
+      status 
+    })
+    setData(res.data?.list)
+    setPatination({
+      ...pagination,
+      current,
+      pageSize,
+      total: res.data?.total,
+    })
+    setLoading(false)
   }
 
   function onChangeTable({ current, pageSize }) {
@@ -75,17 +75,17 @@ function SearchTable(props) {
       ...pagination,
       current,
       pageSize,
-    });
+    })
   }
 
   function handleSearch(params) {
-    setPatination({ ...pagination, current: 1 });
-    setFormParams(params);
+    setPatination({ ...pagination, current: 1 })
+    setFormParams(params)
   }
 
   const goCreate = () => {
-    props.history.replace('/notice/create');
-  };
+    props.history.replace('/notice/create')
+  }
 
   return (
     <Card>
@@ -101,8 +101,7 @@ function SearchTable(props) {
       <PermissionWrapper
         requiredPermissions={[
           { resource: 'menu.list.searchTable', actions: ['write'] },
-        ]}
-      ></PermissionWrapper>
+        ]}></PermissionWrapper>
       <Table
         rowKey="id"
         loading={loading}
@@ -112,7 +111,7 @@ function SearchTable(props) {
         data={data}
       />
     </Card>
-  );
+  )
 }
 
-export default SearchTable;
+export default SearchTable

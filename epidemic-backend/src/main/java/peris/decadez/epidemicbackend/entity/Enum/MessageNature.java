@@ -3,7 +3,6 @@ package peris.decadez.epidemicbackend.entity.Enum;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 
 public enum MessageNature {
-
     DOWN("DOWN"),UP("UP");
 
     @EnumValue

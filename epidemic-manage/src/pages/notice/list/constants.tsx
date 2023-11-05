@@ -1,15 +1,19 @@
-import React from 'react';
-import { Button, Typography, Badge } from '@arco-design/web-react';
-import dayjs from 'dayjs';
-import styles from './style/index.module.less';
+import React from 'react'
+import { Button, Typography, Badge } from '@arco-design/web-react'
+import dayjs from 'dayjs'
+import styles from './style/index.module.less'
 
-const { Text } = Typography;
+const { Text } = Typography
 
-export const Status = ['未发布', '已发布', '已下线'];
+export const Status = {
+  CLOSE: "已关闭",
+  OPEN: "已发布",
+  NULL: "未发布",
+}
 
 export function getColumns(
   t: any,
-  callback: (record: Record<string, any>, type: string) => Promise<void>
+  callback: (record: Record<string, any>, type: string) => Promise<void>,
 ) {
   return [
     {
@@ -19,34 +23,36 @@ export function getColumns(
     },
     {
       title: t['menu.notice.title'],
-      dataIndex: 'name',
-    },
-    {
-      title: t['menu.notice.creator'],
-      dataIndex: 'creator',
+      dataIndex: 'title',
     },
     {
       title: t['menu.notice.image'],
-      dataIndex: 'image',
+      dataIndex: 'imgUrl',
       render: (value) => <div className={styles['image']}>{value}</div>,
     },
     {
       title: t['menu.notice.createTime'],
-      dataIndex: 'createTime',
-      render: (x) => dayjs().subtract(x, 'days').format('YYYY-MM-DD HH:mm:ss'),
-      sorter: (a, b) => b.createTime - a.createTime,
+      dataIndex: 'createAt',
+      render: (x) => dayjs(x).format('YYYY-MM-DD HH:mm:ss'),
+      sorter: (a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf(),
+    },
+    {
+      title: "编辑时间",
+      dataIndex: 'editAt',
+      render: (x) => dayjs(x).format('YYYY-MM-DD HH:mm:ss'),
+      sorter: (a, b) => dayjs(b.editAt).valueOf() - dayjs(a.editAt).valueOf(),
     },
     {
       title: t['menu.notice.status'],
       dataIndex: 'status',
       render: (x) => {
-        if (x === 0) {
-          return <Badge status="warning" text={Status[x]}></Badge>;
+        if (x === "CLOSE") {
+          return <Badge status="default" text={Status[x]}></Badge>
         }
-        if (x === 1) {
-          return <Badge status="success" text={Status[x]}></Badge>;
+        if (x === "OPEN") {
+          return <Badge status="success" text={Status[x]}></Badge>
         }
-        return <Badge status="default" text={Status[x]}></Badge>;
+        return <Badge status="warning" text={"未发布"}></Badge> 
       },
     },
     {
@@ -54,14 +60,21 @@ export function getColumns(
       dataIndex: 'operations',
       headerCellStyle: { paddingLeft: '15px' },
       render: (_, record) => (
-        <Button
-          type="text"
-          size="small"
-          onClick={() => callback(record, 'view')}
-        >
-          {t['menu.notice.publish']}
-        </Button>
+        <div>
+          <Button
+            type="text"
+            size="small"
+            onClick={() => callback(record, 'view')}>
+            {t['menu.notice.publish']}
+          </Button>
+          <Button
+            type="text"
+            size="small"
+            onClick={() => callback(record, 'view')}>
+            查看详情
+          </Button>
+        </div>
       ),
     },
-  ];
+  ]
 }
