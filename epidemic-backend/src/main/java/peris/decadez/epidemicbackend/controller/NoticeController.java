@@ -12,7 +12,9 @@ import peris.decadez.epidemicbackend.service.NoticeService;
 import peris.decadez.epidemicbackend.utils.TokenUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/notice")
@@ -31,13 +33,37 @@ public class NoticeController {
 
     @UserLoginToken
     @GetMapping("/list")
-    public ResponseData<?> getNoticeList() {
+    public ResponseData<?> getNoticeList(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                         @RequestParam(value = "title", defaultValue = "") String title,
+                                         @RequestParam(value = "start", defaultValue = "") String start,
+                                         @RequestParam(value = "end", defaultValue = "") String end,
+                                         @RequestParam(value = "status[]", defaultValue = "") String[] status
+    ) {
         Long userId = Long.valueOf(TokenUtil.getTokenUserId());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("page", page);
+        params.put("pageSize", pageSize);
+
+        if (status.length != 0) {
+            params.put("status", status);
+        }
+
+        if (!title.isEmpty()) {
+            params.put("title", title);
+        }
+
+        if (!start.isEmpty() && !end.isEmpty()) {
+            params.put("start", start);
+            params.put("end", end);
+        }
+
         if (userId == null) {
             return ResponseData.of(401, false, "请先登录");
         }
-        List<Notice> notices = noticeService.getNoticeListByUserId(userId);
-        return ResponseData.of(200, true, notices);
+        Map<String, Object> noticeMap = noticeService.getNoticeListByUserId(userId, params);
+        return ResponseData.of(200, true, noticeMap);
     }
 
     @UserLoginToken

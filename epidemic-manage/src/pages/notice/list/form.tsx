@@ -48,13 +48,13 @@ function SearchForm(props: {
         wrapperCol={{ span: 19 }}
       >
         <Row gutter={24}>
-          <Col span={colSpan}>
+          {/* <Col span={colSpan}>
             <Form.Item label={t['menu.notice.id']} field="id">
               <Input placeholder={t['menu.notice.id.placeholder']} allowClear />
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col span={colSpan}>
-            <Form.Item label={t['menu.notice.title']} field="name">
+            <Form.Item label={t['menu.notice.title']} field="title">
               <Input
                 allowClear
                 placeholder={t['menu.notice.title.placeholder']}
@@ -62,9 +62,10 @@ function SearchForm(props: {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['menu.notice.createTime']} field="createdTime">
+            <Form.Item label={t['menu.notice.createTime']} field="createAt">
               <DatePicker.RangePicker
                 allowClear
+                showTime
                 style={{ width: '100%' }}
                 disabledDate={(date) => dayjs(date).isAfter(dayjs())}
               />
@@ -74,9 +75,9 @@ function SearchForm(props: {
             <Form.Item label={t['menu.notice.status']} field="status">
               <Select
                 placeholder={t['menu.notice.status.placeholder']}
-                options={Status.map((item, index) => ({
-                  label: item,
-                  value: index,
+                options={Object.keys(Status).map((item, index) => ({
+                  label: Status[item],
+                  value: item,
                 }))}
                 mode="multiple"
                 allowClear
