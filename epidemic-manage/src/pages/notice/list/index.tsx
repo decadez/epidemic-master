@@ -14,7 +14,7 @@ import locale from './locale'
 import styles from './style/index.module.less'
 import './mock'
 import { getColumns } from './constants'
-import { getNoticeList } from '@/service/notice.service'
+import { deleteNotice, getNoticeList } from '@/service/notice.service'
 
 const { Title } = Typography
 export const ContentType = ['图文', '横版短视频', '竖版短视频']
@@ -25,6 +25,15 @@ function SearchTable(props) {
 
   const tableCallback = async (record, type) => {
     console.log(record, type)
+    if (type === 'publish') {
+      console.log('edit')
+    }
+    if (type === 'del') {
+      fetchData();
+    }
+    if (type === 'view') {
+      console.log('view')
+    }
   }
 
   const columns = useMemo(() => getColumns(t, tableCallback), [t])

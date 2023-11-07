@@ -1,5 +1,40 @@
 import request from '@/utils/request'
 
+export async function deleteNotice(id: number) {
+  const res = await request(`/notice/delete`, {
+    method: 'GET',
+    params: {
+      id,
+    },
+  })
+  if (res) {
+    return res
+  }
+  return false
+}
+export async function createNotice({
+  imgUrl,
+  title,
+  content,
+}: {
+  imgUrl: string
+  title: string
+  content: string
+}) {
+  const res = await request(`/notice/create`, {
+    method: 'POST',
+    data: {
+      imgUrl,
+      title,
+      content,
+    },
+  })
+  if (res) {
+    return res
+  }
+  return false
+}
+
 export async function getNoticeList({
   page,
   pageSize,

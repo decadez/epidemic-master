@@ -13,6 +13,8 @@ import {
 } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
+import { baseUrl } from '@/utils/request';
+import { createNotice } from '@/service/notice.service';
 
 const Create = (props) => {
   const [editorState, setEditorState] = React.useState(null);
@@ -26,11 +28,16 @@ const Create = (props) => {
 
   const onSubmit = () => {
     form.validate().then(values => {
-      console.log(values);
+      const htmlContent = editorState?.toHTML();
+      createNotice({
+        title: values?.name,
+        content: htmlContent,
+        imgUrl: values?.upload[0]?.response?.data?.imagePath,
+      }).then(res => {
+        console.log(res);
+        // props.history.replace('/notice/list');
+      });
     })
-    const htmlContent = editorState?.toHTML();
-    console.log(htmlContent);
-    props.history.replace('/notice/list');
   };
 
   return (
@@ -41,7 +48,7 @@ const Create = (props) => {
             <Form.Item
               label={t['menu.notice.title']}
               field="name"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "请输入公告标题" }]}
             >
               <Input placeholder={t['menu.notice.title.placeholder']} />
             </Form.Item>
@@ -50,29 +57,13 @@ const Create = (props) => {
             <Form.Item
               label={t['menu.notice.upload']}
               field="upload"
-              initialValue={[
-                {
-                  uid: '-1',
-                  url: '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/e278888093bef8910e829486fb45dd69.png~tplv-uwbnlip3yd-webp.webp',
-                  name: '20200717',
-                },
-              ]}
+              rules={[{ required: true, message: "请上传公告图片" }]}
             >
               <Upload
-                action="/"
-                onPreview={(file) => {
-                  Modal.info({
-                    title: 'Preview',
-                    content: (
-                      <img
-                        src={file.url || URL.createObjectURL(file.originFile)}
-                        style={{
-                          maxWidth: '100%',
-                        }}
-                      ></img>
-                    ),
-                  });
-                }}
+                action={baseUrl + '/api/uploadImage'}
+                limit={1}
+                imagePreview={true}
+                listType='picture-card'
               />
             </Form.Item>
           </Grid.Col>

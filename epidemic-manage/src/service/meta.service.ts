@@ -1,5 +1,19 @@
 import request from '@/utils/request'
 
+export async function uploadImage(image: File) {
+  const fileData = new FormData;
+  fileData.append('img', image);
+
+  const res = await request(`/api/uploadImage`, {
+    method: 'POST',
+    body: JSON.stringify({ image: fileData }),
+  })
+  if (res) {
+    return res
+  }
+  return false
+}
+
 export async function getMetaTableNames() {
   const res = await request(`/meta/tableNames`, {
     method: 'GET',
