@@ -31,6 +31,10 @@ export function getColumns(
       render: (value) => <div className={styles['image']}>{value}</div>,
     },
     {
+      title: '创建人',
+      dataIndex: 'creator',
+    },
+    {
       title: t['menu.notice.createTime'],
       dataIndex: 'createAt',
       render: (x) => dayjs(x).format('YYYY-MM-DD HH:mm:ss'),

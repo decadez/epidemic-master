@@ -38,13 +38,20 @@ public class NoticeController {
                                          @RequestParam(value = "title", defaultValue = "") String title,
                                          @RequestParam(value = "start", defaultValue = "") String start,
                                          @RequestParam(value = "end", defaultValue = "") String end,
-                                         @RequestParam(value = "status[]", defaultValue = "") String[] status
+                                         @RequestParam(value = "status[]", defaultValue = "") String[] status,
+                                         @RequestParam(value = "creators[]", defaultValue = "") Integer[] creators,
+                                         @RequestParam(value = "isOwnSelf", defaultValue = "false") Boolean isOwnSelf
     ) {
         Long userId = Long.valueOf(TokenUtil.getTokenUserId());
 
         Map<String, Object> params = new HashMap<>();
         params.put("page", page);
         params.put("pageSize", pageSize);
+        params.put("isOwnSelf", isOwnSelf);
+
+        if (creators.length != 0) {
+            params.put("creators", creators);
+        }
 
         if (status.length != 0) {
             params.put("status", status);
@@ -59,10 +66,7 @@ public class NoticeController {
             params.put("end", end);
         }
 
-        if (userId == null) {
-            return ResponseData.of(401, false, "请先登录");
-        }
-        Map<String, Object> noticeMap = noticeService.getNoticeListByUserId(userId, params);
+        Map<String, Object> noticeMap = noticeService.getNoticeList(params);
         return ResponseData.of(200, true, noticeMap);
     }
 

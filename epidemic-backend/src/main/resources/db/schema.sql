@@ -20,6 +20,7 @@ CREATE TABLE user (
 CREATE TABLE notice (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT, FOREIGN KEY (user_id) REFERENCES user(id),
+    creator VARCHAR(20) NOT NULL,
     title VARCHAR(20) default null,
     img_url VARCHAR(100) default NULL,
     content VARCHAR(100) default NULL,
