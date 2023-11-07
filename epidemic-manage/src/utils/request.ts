@@ -2,7 +2,7 @@ import Qs from 'query-string'
 import { extend } from 'umi-request';
 import { Message } from '@arco-design/web-react';
 
-const baseUrl = 'http://localhost:8080';
+export const baseUrl = 'http://localhost:8080';
 
 enum StatusCode {
   SUCCESS = 200,

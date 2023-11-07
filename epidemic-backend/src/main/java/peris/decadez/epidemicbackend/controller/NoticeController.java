@@ -6,9 +6,11 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import peris.decadez.epidemicbackend.annotation.UserLoginToken;
+import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 import peris.decadez.epidemicbackend.entity.Notice;
 import peris.decadez.epidemicbackend.entity.User;
 import peris.decadez.epidemicbackend.service.NoticeService;
+import peris.decadez.epidemicbackend.service.UserService;
 import peris.decadez.epidemicbackend.utils.TokenUtil;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ import java.util.Map;
 public class NoticeController {
     @Autowired
     NoticeService noticeService;
+
+    @Autowired
+    UserService useService;
 
     // @MessageMapping和@RequestMapping功能类似，用于设置URL映射地址，浏览器向服务器发起请求，需要通过该地址。
     // 如果服务器接受到了消息，就会对订阅了@SendTo括号中的地址传送消息。
@@ -68,6 +73,25 @@ public class NoticeController {
 
         Map<String, Object> noticeMap = noticeService.getNoticeList(params);
         return ResponseData.of(200, true, noticeMap);
+    }
+
+    @UserLoginToken
+    @PostMapping("/create")
+    public ResponseData<?> createNotice(@RequestBody Notice notice, HttpServletResponse response) {
+        Long userId = Long.valueOf(TokenUtil.getTokenUserId());
+        User user = useService.findUserById(userId);
+        notice.setCreator(user.getName());
+        notice.setUserId(user.getId());
+        notice.setStatus(NoticeStatus.NULL);
+        noticeService.save(notice);
+        return ResponseData.of(200, true, true);
+    }
+
+    @UserLoginToken
+    @GetMapping("/delete")
+    public ResponseData<?> deleteNotice(@RequestParam(value = "id", defaultValue = "") Integer noticeId) {
+        noticeService.deleteNotice(noticeId);
+        return ResponseData.of(200, true, true);
     }
 
     @UserLoginToken
