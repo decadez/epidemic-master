@@ -42,6 +42,8 @@ function SearchTable(props) {
     createAt?: [string, string]
     title?: string
     status?: string[]
+    creators?: number[]
+    isOwnSelf?: boolean
   }>({})
 
   useEffect(() => {
@@ -50,7 +52,7 @@ function SearchTable(props) {
 
   const fetchData = async () => {
     const { current, pageSize } = pagination
-    const {title, createAt, status } = formParams;
+    const { title, createAt, status, creators, isOwnSelf } = formParams
     setLoading(true)
     const res = await getNoticeList({
       page: current,
@@ -58,7 +60,9 @@ function SearchTable(props) {
       title,
       start: createAt?.[0],
       end: createAt?.[1],
-      status 
+      creators,
+      status,
+      isOwnSelf
     })
     setData(res.data?.list)
     setPatination({
@@ -90,7 +94,7 @@ function SearchTable(props) {
   return (
     <Card>
       <Title heading={6}>{t['menu.notice.list']}</Title>
-      <SearchForm onSearch={handleSearch} />
+      <SearchForm data={data} onSearch={handleSearch} />
       <div className={styles['button-group']}>
         <Space>
           <Button type="primary" onClick={goCreate}>

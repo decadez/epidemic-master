@@ -8,11 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface NoticeService extends IService<Notice> {
-  public List<Notice> getNoticeList();
+  public Map<String, Object> getNoticeList(Map<String, Object> params);
 
-  List<Notice> getNoticeListByUserId(Long userId);
-
-  Map<String, Object> getNoticeListByUserId(Long userId, Map<String, Object> params);
 
   public void updateNotice(Notice notice);
 

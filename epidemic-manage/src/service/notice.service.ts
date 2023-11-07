@@ -6,13 +6,17 @@ export async function getNoticeList({
   title,
   start,
   end,
-  status
+  status,
+  creators,
+  isOwnSelf,
 }: {
+  isOwnSelf?: boolean
   page?: number
   pageSize?: number
   title?: string
   start?: string
   end?: string
+  creators?: number[]
   status?: string[]
 }) {
   const res = await request(`/notice/list`, {
@@ -24,6 +28,8 @@ export async function getNoticeList({
       start,
       end,
       status,
+      creators,
+      isOwnSelf,
     },
   })
   if (res) {

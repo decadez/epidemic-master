@@ -13,6 +13,7 @@ import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 import peris.decadez.epidemicbackend.entity.Notice;
 import peris.decadez.epidemicbackend.mapper.NoticeMapper;
 import peris.decadez.epidemicbackend.service.NoticeService;
+import peris.decadez.epidemicbackend.utils.TokenUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,22 +25,6 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
   @Autowired
   NoticeMapper noticeMapper;
-
-  @Override
-  public List<Notice> getNoticeList() {
-    return noticeMapper.selectList(null);
-  }
-
-  @Override
-  public List<Notice> getNoticeListByUserId(Long userId) {
-    Map<String, Object> columnsMap = new HashMap<>();
-    columnsMap.put("user_id", userId);
-    List<Notice> noticeList = noticeMapper.selectByMap(columnsMap);
-    if (!noticeList.isEmpty()) {
-      return noticeList;
-    }
-    return null;
-  }
 
   public static NoticeStatus[] parseStringArray(String[] strings) {
     try {
@@ -63,10 +48,20 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     }
   }
   @Override
-  public Map<String, Object> getNoticeListByUserId(Long userId, Map<String, Object> params) {
+  public Map<String, Object> getNoticeList(Map<String, Object> params) {
     IPage<Notice> pagination = new Page<>(Long.parseLong(params.get("page").toString()), Long.parseLong(params.get("pageSize").toString()));
     QueryWrapper<Notice> wrapper = new QueryWrapper<>();
-    wrapper.eq("user_id",userId);
+
+    boolean isOwnSelf = Boolean.parseBoolean(params.get("isOwnSelf").toString());
+    if (isOwnSelf) {
+      Long userId = Long.valueOf(TokenUtil.getTokenUserId());
+      wrapper.eq("user_id",userId);
+    }
+
+    if (params.get("creators") != null && !isOwnSelf) {
+      Integer[] creators = (Integer[]) params.get("creators");
+      wrapper.in("user_id", creators);
+    }
 
     if (params.get("status") != null) {
       String[] statusArray = (String[]) params.get("status");

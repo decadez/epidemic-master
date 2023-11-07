@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 public class Notice implements Serializable {
   @TableId(type = IdType.AUTO)
   private Long id;
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Long userId;
+  private String creator;
   private String title;
   private String imgUrl;
   private String content;
