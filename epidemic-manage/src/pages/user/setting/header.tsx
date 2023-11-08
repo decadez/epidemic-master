@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Avatar,
@@ -11,36 +11,51 @@ import {
   Input,
   Message,
   Form,
-} from '@arco-design/web-react';
-import { IconCamera, IconPlus } from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
-import styles from './style/header.module.less';
-import dayjs from 'dayjs';
-import { editUser } from '@/service/user.service';
-import { updateUserInfo } from "@/store/reducer/userSlice";
-import { useAppDispatch } from '@/store/hooks';
+} from '@arco-design/web-react'
+import { IconCamera, IconPlus } from '@arco-design/web-react/icon'
+import useLocale from '@/utils/useLocale'
+import locale from './locale'
+import styles from './style/header.module.less'
+import dayjs from 'dayjs'
+import { editUser } from '@/service/user.service'
+import { updateUserInfo } from '@/store/reducer/userSlice'
+import { useAppDispatch } from '@/store/hooks'
+import { baseUrl } from '@/utils/request'
 
 export default function Info({
   userInfo = {},
   loading,
 }: {
-  userInfo: any;
-  loading: boolean;
+  userInfo: any
+  loading: boolean
 }) {
-  const t = useLocale(locale);
+  const t = useLocale(locale)
 
-  const [avatar, setAvatar] = useState('');
-  const [form] = Form.useForm();
-  const dispatch = useAppDispatch();
+  const [avatar, setAvatar] = useState('')
+  const [form] = Form.useForm()
+  const dispatch = useAppDispatch()
 
-  function onAvatarChange(_, file) {
-    setAvatar(file.originFile ? URL.createObjectURL(file.originFile) : '');
+  const onAvatarChange = async (_, file) => {
+    setAvatar(file.originFile ? URL.createObjectURL(file.originFile) : '')
+
+    if (file.response && file.response.data && file.response.success) {
+      const imgUrl =  file.response.data?.imagePath;
+      const res = await editUser({
+        avatar: imgUrl,
+      })
+      if (res && res.success) {
+        dispatch(
+          updateUserInfo({
+            avatar: imgUrl
+          }),
+        )
+      }
+    }
   }
 
   useEffect(() => {
-    setAvatar(userInfo.avatar);
-  }, [userInfo]);
+    setAvatar(userInfo.avatar)
+  }, [userInfo])
 
   const loadingImg = (
     <Skeleton
@@ -48,37 +63,39 @@ export default function Info({
       style={{ width: '100px', height: '100px' }}
       animation
     />
-  );
+  )
 
-  const [visible, setVisible] = useState<boolean>(false);
-  const [editLoading, setEditLoading] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(false)
+  const [editLoading, setEditLoading] = useState<boolean>(false)
 
   const editPhoneNumber = () => {
-    setVisible(true);
-  };
+    setVisible(true)
+  }
 
   const onOk = async () => {
-    const phone = form.getFieldValue('phone');
-    setEditLoading(true);
+    const phone = form.getFieldValue('phone')
+    setEditLoading(true)
     const res = await editUser({
       phone,
-    });
+    })
     if (res) {
-      Message.success('修改成功！');
-      setVisible(false);
-      dispatch(updateUserInfo({
-        phone
-      }))
+      Message.success('修改成功！')
+      setVisible(false)
+      dispatch(
+        updateUserInfo({
+          phone,
+        }),
+      )
     }
-    setEditLoading(false);
-  };
+    setEditLoading(false)
+  }
 
   const onCancel = () => {
-    setEditLoading(false);
-    setVisible(false);
-  };
+    setEditLoading(false)
+    setVisible(false)
+  }
 
-  const loadingNode = <Skeleton text={{ rows: 1 }} animation />;
+  const loadingNode = <Skeleton text={{ rows: 1 }} animation />
   return (
     <div className={styles['info-wrapper']}>
       <Modal
@@ -94,17 +111,16 @@ export default function Info({
             </Button>
           </>
         }
-        autoFocus={false}
-      >
+        autoFocus={false}>
         <Form form={form}>
-          <Form.Item 
+          <Form.Item
             rules={[
               {
                 validator(value, cb) {
-                  if (!(/^1[3456789]\d{9}$/.test(value))) {
-                    return cb('请正确填写手机号');
+                  if (!/^1[3456789]\d{9}$/.test(value)) {
+                    return cb('请正确填写手机号')
                   }
-                  return cb();
+                  return cb()
                 },
               },
             ]}
@@ -118,16 +134,18 @@ export default function Info({
           </Form.Item>
         </Form>
       </Modal>
-      <Upload showUploadList={false} onChange={onAvatarChange}>
+      <Upload
+        action={baseUrl + '/api/uploadImage'}
+        showUploadList={false}
+        onChange={onAvatarChange}>
         {loading ? (
           loadingImg
         ) : (
           <Avatar
             size={100}
             triggerIcon={<IconCamera />}
-            className={styles['info-avatar']}
-          >
-            {avatar ? <img src={avatar} /> : <IconPlus />}
+            className={styles['info-avatar']}>
+            {avatar ? <img src={baseUrl + "/" + avatar} /> : <IconPlus />}
           </Avatar>
         )}
       </Upload>
@@ -155,8 +173,7 @@ export default function Info({
                 <Link
                   onClick={editPhoneNumber}
                   role="button"
-                  className={styles['edit-btn']}
-                >
+                  className={styles['edit-btn']}>
                   {t['userSetting.btn.edit']}
                 </Link>
               </span>
@@ -171,5 +188,5 @@ export default function Info({
         ]}
       />
     </div>
-  );
+  )
 }

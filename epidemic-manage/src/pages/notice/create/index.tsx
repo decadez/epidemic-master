@@ -34,8 +34,14 @@ const Create = (props) => {
         content: htmlContent,
         imgUrl: values?.upload[0]?.response?.data?.imagePath,
       }).then(res => {
-        console.log(res);
-        // props.history.replace('/notice/list');
+        if (res && res.success) {
+          Modal.success({
+            title: '公告创建成功，点击确认跳转至发布~',
+            onOk: () => {
+              props.history.replace('/notice/list');
+            },
+          })
+        }
       });
     })
   };
@@ -44,7 +50,7 @@ const Create = (props) => {
     <Form form={form}>
       <Card>
         <Grid.Row justify="space-between">
-          <Grid.Col span={7}>
+          <Grid.Col span={8}>
             <Form.Item
               label={t['menu.notice.title']}
               field="name"
@@ -53,7 +59,7 @@ const Create = (props) => {
               <Input placeholder={t['menu.notice.title.placeholder']} />
             </Form.Item>
           </Grid.Col>
-          <Grid.Col span={10}>
+          <Grid.Col span={12}>
             <Form.Item
               label={t['menu.notice.upload']}
               field="upload"
@@ -67,7 +73,7 @@ const Create = (props) => {
               />
             </Form.Item>
           </Grid.Col>
-          <Grid.Col span={1}>
+          <Grid.Col span={1.5}>
             <Button type="primary" loading={loading} onClick={onSubmit}>
               {t['menu.notice.create']}
             </Button>

@@ -6,6 +6,9 @@ import {
   Button,
   Space,
   Typography,
+  Modal,
+  Descriptions,
+  Message,
 } from '@arco-design/web-react'
 import PermissionWrapper from '@/components/PermissionWrapper'
 import useLocale from '@/utils/useLocale'
@@ -13,26 +16,97 @@ import SearchForm from './form'
 import locale from './locale'
 import styles from './style/index.module.less'
 import './mock'
-import { getColumns } from './constants'
-import { deleteNotice, getNoticeList } from '@/service/notice.service'
+import { Status, getColumns } from './constants'
+import { deleteNotice, editNotice, getNoticeList } from '@/service/notice.service'
+import 'braft-editor/dist/index.css'
+import BraftEditor from 'braft-editor'
+import dayjs from 'dayjs'
 
 const { Title } = Typography
 export const ContentType = ['图文', '横版短视频', '竖版短视频']
 export const FilterType = ['规则筛选', '人工']
 
 function SearchTable(props) {
+  const [editorState, setEditorState] = React.useState(null)
   const t = useLocale(locale)
 
+  const handleEditorChange = (editorState) => {
+    setEditorState(editorState)
+  }
+
   const tableCallback = async (record, type) => {
-    console.log(record, type)
     if (type === 'publish') {
       console.log('edit')
     }
     if (type === 'del') {
-      fetchData();
+      fetchData()
     }
     if (type === 'view') {
-      console.log('view')
+      const data = [
+        {
+          label: '标题',
+          value: record.title,
+          span: 3,
+        },
+        {
+          label: '状态',
+          value: Status[record.status],
+          span: 1.5,
+        },
+        {
+          label: '创建时间',
+          value: dayjs(record.createAt).format('YYYY-MM-DD HH:mm:ss'),
+          span: 1.5,
+        },
+        {
+          label: '公告内容',
+        },
+      ]
+      Modal.info({
+        icon: null,
+        style: {
+          width: '80%',
+        },
+        footer: (cancelButtonNode, okButtonNode) => {
+          return (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}>
+              {cancelButtonNode}
+              {okButtonNode}
+            </div>
+          )
+        },
+        okButtonProps: {
+          style: {
+            marginLeft: 8,
+          },
+        },
+        onOk: () => {
+          const htmlContent = editorState?.toHTML();
+          fetchData();
+          editNotice({
+            ...record,
+            content: htmlContent,
+          }).then((res) => {
+            if (res && res.success) {
+              Message.success("修改成功~")
+            }
+          })
+        },
+        content: (
+          <>
+            <Descriptions colon=" :" layout="inline-horizontal" data={data} />
+            <BraftEditor
+              onChange={handleEditorChange}
+              value={editorState}
+              defaultValue={BraftEditor.createEditorState(record.content)}
+            />
+          </>
+        ),
+      })
     }
   }
 
@@ -71,7 +145,7 @@ function SearchTable(props) {
       end: createAt?.[1],
       creators,
       status,
-      isOwnSelf
+      isOwnSelf,
     })
     setData(res.data?.list)
     setPatination({

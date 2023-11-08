@@ -1,5 +1,17 @@
 import request from '@/utils/request'
 
+
+export async function editNotice(notice: any) {
+  const res = await request(`/notice/edit`, {
+    method: 'POST',
+    data: notice,
+  })
+  if (res) {
+    return res
+  }
+  return false
+}
+
 export async function deleteNotice(id: number) {
   const res = await request(`/notice/delete`, {
     method: 'GET',

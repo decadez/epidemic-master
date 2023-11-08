@@ -20,7 +20,8 @@ public class ImageStorage {
     }
 
     public String storeImage(String imageName, byte[] imageBytes) {
-        String imagePath = this.imagePath + "/"+ UUID.randomUUID() + imageName.substring(imageName.lastIndexOf("."));
+        String imageId = UUID.randomUUID() + imageName.substring(imageName.lastIndexOf("."));
+        String imagePath = this.imagePath + "/"+ imageId;
         File dir = new File(imagePath);
         dir.getParentFile().mkdirs();
         // 写入文件
@@ -39,7 +40,7 @@ public class ImageStorage {
                 e.printStackTrace();
             }
         }
-        return imagePath;
+        return "/images/" + imageId;
     }
 
     public byte[] getImageBytes(String imageName) {
