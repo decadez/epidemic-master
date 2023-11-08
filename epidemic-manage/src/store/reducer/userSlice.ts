@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import defaultSettings from '@/settings.json'
 import { login, getUserInfo } from '@/service/user.service'
 import { isEmpty } from 'lodash'
+import { baseUrl } from '@/utils/request'
 
 export interface UserState {
   settings?: typeof defaultSettings
@@ -64,8 +65,6 @@ export const userSlice = createSlice({
       .addCase(fetchUserInfo.fulfilled, (state, action) => {
         state.userInfo = {
           ...action.payload,
-          avatar:
-            'https://lf1-xgcdn-tos.pstatp.com/obj/vcloud/vadmin/start.8e0e4855ee346a46ccff8ff3e24db27b.png',
         }
         state.userLoading = false
       })

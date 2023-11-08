@@ -97,13 +97,13 @@ public class NoticeController {
     @UserLoginToken
     @PostMapping("/send")
     public ResponseData<?> sendNotice(@RequestBody Notice notice, HttpServletResponse response) {
-        Long userId = Long.valueOf(TokenUtil.getTokenUserId());
         return ResponseData.of(200, true, true);
     }
 
     @UserLoginToken
     @PostMapping("/edit")
     public ResponseData<?> editNotice(@RequestBody Notice notice, HttpServletResponse response) {
+        noticeService.updateNotice(notice);
         return ResponseData.of(200, true, true);
     }
 }

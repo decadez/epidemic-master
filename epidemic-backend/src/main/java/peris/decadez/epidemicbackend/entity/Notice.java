@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 
@@ -22,6 +20,8 @@ public class Notice implements Serializable {
   private String creator;
   private String title;
   private String imgUrl;
+  @Lob
+  @Column(name = "content", columnDefinition = "longtext")
   private String content;
   private NoticeStatus status;
   @TableField(fill = FieldFill.INSERT)

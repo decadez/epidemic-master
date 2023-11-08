@@ -37,6 +37,7 @@ import { generatePermission } from '@/routes';
 import { logout } from '@/store/reducer/userSlice';
 import { useHistory } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { baseUrl } from '@/utils/request';
 
 function Navbar({ show }: { show: boolean }) {
   const t = useLocale();
@@ -169,7 +170,7 @@ function Navbar({ show }: { show: boolean }) {
                 {userLoading ? (
                   <IconLoading />
                 ) : (
-                  <img alt="avatar" src={userInfo.avatar} />
+                  <img alt="avatar" src={baseUrl + '/' + userInfo.avatar} />
                 )}
               </Avatar>
             </Dropdown>

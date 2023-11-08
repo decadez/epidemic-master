@@ -20,6 +20,7 @@ public class User implements Serializable {
   private String idCard;
   private String phone;
   private String address;
+  private String avatar;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
   @TableField(fill = FieldFill.INSERT)

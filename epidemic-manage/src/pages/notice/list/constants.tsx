@@ -1,8 +1,15 @@
 import React from 'react'
-import { Button, Typography, Badge, Popconfirm } from '@arco-design/web-react'
+import {
+  Image,
+  Button,
+  Typography,
+  Badge,
+  Popconfirm,
+} from '@arco-design/web-react'
 import dayjs from 'dayjs'
 import styles from './style/index.module.less'
 import { deleteNotice } from '@/service/notice.service'
+import { baseUrl } from '@/utils/request'
 
 const { Text } = Typography
 
@@ -29,7 +36,14 @@ export function getColumns(
     {
       title: t['menu.notice.image'],
       dataIndex: 'imgUrl',
-      render: (value) => <div className={styles['image']}>{value}</div>,
+      render: (value) => (
+        <Image
+          width={40}
+          height={40}
+          src={baseUrl + value}
+          loader={true}
+        />
+      ),
     },
     {
       title: '创建人',
@@ -77,8 +91,8 @@ export function getColumns(
             icon={null}
             title="确认要删除该条记录吗？"
             onOk={() => {
-              deleteNotice(record.id).then(res => {
-                callback(record, 'del');
+              deleteNotice(record.id).then((res) => {
+                callback(record, 'del')
               })
             }}>
             <Button type="text" size="small">
