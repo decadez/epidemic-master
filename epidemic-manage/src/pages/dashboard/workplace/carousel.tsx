@@ -1,8 +1,18 @@
 import React from 'react';
 import { Carousel } from '@arco-design/web-react';
+import { getCommonNoticeList } from '@/service/notice.service';
+import { useRequest } from 'ahooks';
+import { baseUrl } from '@/utils/request';
 
-const imageSrc = ['https://img1.baidu.com/it/u=131698361,3715172942&fm=253&fmt=auto&app=120&f=JPEG?w=891&h=500', 'https://img1.baidu.com/it/u=131698361,3715172942&fm=253&fmt=auto&app=120&f=JPEG?w=891&h=500', 'https://img1.baidu.com/it/u=131698361,3715172942&fm=253&fmt=auto&app=120&f=JPEG?w=891&h=500'];
 function C() {
+  const { data, run, loading } = useRequest(getCommonNoticeList, {
+    manual: true,
+  })
+
+  React.useEffect(() => {
+    run();
+  }, [])
+
   return (
     <Carousel
       indicatorType="slider"
@@ -13,12 +23,13 @@ function C() {
         height: 160,
       }}
     >
-      {imageSrc.map((src, index) => (
+      {data?.data?.map((item, index) => (
         <div key={index}>
           <img
-            src={src}
+            src={baseUrl + item.imgUrl}
             style={{
               width: 280,
+              height: 160,
             }}
           />
         </div>
