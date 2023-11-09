@@ -9,6 +9,9 @@ import {
   Modal,
   Descriptions,
   Message,
+  Input,
+  Upload,
+  Form,
 } from '@arco-design/web-react'
 import PermissionWrapper from '@/components/PermissionWrapper'
 import useLocale from '@/utils/useLocale'
@@ -17,46 +20,114 @@ import locale from './locale'
 import styles from './style/index.module.less'
 import './mock'
 import { Status, getColumns } from './constants'
-import { deleteNotice, editNotice, getNoticeList } from '@/service/notice.service'
+import {
+  createNotice,
+  deleteNotice,
+  editNotice,
+  getNoticeList,
+} from '@/service/notice.service'
 import 'braft-editor/dist/index.css'
 import BraftEditor from 'braft-editor'
 import dayjs from 'dayjs'
+import { useReactive } from 'ahooks'
+import { baseUrl } from '@/utils/request'
+import EditForm from '../create'
 
 const { Title } = Typography
-export const ContentType = ['图文', '横版短视频', '竖版短视频']
-export const FilterType = ['规则筛选', '人工']
-
 function SearchTable(props) {
-  const [editorState, setEditorState] = React.useState(null)
+  const editor = useReactive({ state: null, text: '', imgUrl: '' })
   const t = useLocale(locale)
 
   const handleEditorChange = (editorState) => {
-    setEditorState(editorState)
+    editor.state = editorState
+  }
+
+  const handleTextChange = (text) => {
+    editor.text = text
+  }
+
+  const onImgChange = async (_, file) => {
+    if (file.response && file.response.data && file.response.success) {
+      const imgUrl = file.response.data?.imagePath
+      editor.imgUrl = imgUrl
+    }
   }
 
   const tableCallback = async (record, type) => {
-    if (type === 'publish') {
-      console.log('edit')
+    editor.text = record.title
+    editor.imgUrl = record.imgUrl
+    if (type === 'copy') {
+      createNotice(record).then((res) => {
+        if (res && res.success) {
+          fetchData()
+          Message.success('复制成功~')
+        }
+      })
+    }
+    if (type === 'downline' || type === 'publish') {
+      editNotice({
+        ...record,
+        status: type === 'downline' ? 'CLOSE' : 'OPEN',
+      }).then((res) => {
+        if (res && res.success) {
+          fetchData()
+          Message.success(type === 'downline' ? '下线成功~' : '发布成功')
+        }
+      })
     }
     if (type === 'del') {
-      fetchData()
+      deleteNotice(record.id).then((res) => {
+        if (res && res.success) {
+          fetchData()
+        }
+      })
     }
     if (type === 'view') {
       const data = [
         {
-          label: '标题',
-          value: record.title,
-          span: 3,
+          label: '公告标题',
+          value: (
+            <Input
+              disabled={record.status === 'CLOSE'}
+              defaultValue={editor.text}
+              allowClear
+              placeholder="请输入公告内容"
+              onChange={handleTextChange}
+              style={{ width: '50%' }}
+              normalize={(v) => (v ? v.trim() : v)}
+            />
+          ),
+          span: 1,
+        },
+        {
+          label: '公告封面',
+          value: (
+            <Upload
+              disabled={record.status === 'CLOSE'}
+              action={baseUrl + '/api/uploadImage'}
+              limit={1}
+              onChange={onImgChange}
+              imagePreview={true}
+              defaultFileList={[
+                {
+                  uid: record.id,
+                  url: baseUrl + record.imgUrl,
+                },
+              ]}
+              listType="picture-card"
+            />
+          ),
+          span: 2,
         },
         {
           label: '状态',
           value: Status[record.status],
-          span: 1.5,
+          span: 1,
         },
         {
           label: '创建时间',
           value: dayjs(record.createAt).format('YYYY-MM-DD HH:mm:ss'),
-          span: 1.5,
+          span: 2,
         },
         {
           label: '公告内容',
@@ -67,6 +138,8 @@ function SearchTable(props) {
         style: {
           width: '80%',
         },
+        cancelText: '返回',
+        okText: '确定更改',
         footer: (cancelButtonNode, okButtonNode) => {
           return (
             <div
@@ -75,7 +148,7 @@ function SearchTable(props) {
                 justifyContent: 'flex-end',
               }}>
               {cancelButtonNode}
-              {okButtonNode}
+              {record.status !== 'CLOSE' && okButtonNode}
             </div>
           )
         },
@@ -85,23 +158,26 @@ function SearchTable(props) {
           },
         },
         onOk: () => {
-          const htmlContent = editorState?.toHTML();
-          fetchData();
+          const htmlContent = editor.state?.toHTML()
           editNotice({
             ...record,
+            title: editor.text,
+            imgUrl: editor.imgUrl,
             content: htmlContent,
           }).then((res) => {
             if (res && res.success) {
-              Message.success("修改成功~")
+              fetchData()
+              Message.success('修改成功~')
             }
           })
         },
         content: (
           <>
-            <Descriptions colon=" :" layout="inline-horizontal" data={data} />
+            <Descriptions data={data} />
             <BraftEditor
+              readOnly={record.status === 'CLOSE'}
               onChange={handleEditorChange}
-              value={editorState}
+              value={editor.state}
               defaultValue={BraftEditor.createEditorState(record.content)}
             />
           </>
