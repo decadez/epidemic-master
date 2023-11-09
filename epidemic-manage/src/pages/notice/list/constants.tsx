@@ -27,22 +27,17 @@ export function getColumns(
     {
       title: t['menu.notice.id'],
       dataIndex: 'id',
-      render: (value) => <Text copyable>{value}</Text>,
     },
     {
       title: t['menu.notice.title'],
       dataIndex: 'title',
+      render: (value) => <Text copyable>{value}</Text>,
     },
     {
       title: t['menu.notice.image'],
       dataIndex: 'imgUrl',
       render: (value) => (
-        <Image
-          width={40}
-          height={40}
-          src={baseUrl + value}
-          loader={true}
-        />
+        <Image width={40} height={40} src={baseUrl + value} loader={true} />
       ),
     },
     {
@@ -81,19 +76,36 @@ export function getColumns(
       headerCellStyle: { paddingLeft: '15px' },
       render: (_, record) => (
         <div>
-          <Button
-            type="text"
-            size="small"
-            onClick={() => callback(record, 'publish')}>
-            {t['menu.notice.publish']}
-          </Button>
+          {record.status === 'NULL' && (
+            <Button
+              type="text"
+              size="small"
+              onClick={() => callback(record, 'publish')}>
+              {t['menu.notice.publish']}
+            </Button>
+          )}
+           {record.status === 'CLOSE' && (
+            <Button
+              type="text"
+              size="small"
+              onClick={() => callback(record, 'copy')}>
+              复制
+            </Button>
+          )}
+          {record.status === 'OPEN' && (
+            <Button
+              type="text"
+              size="small"
+              onClick={() => callback(record, 'downline')}>
+              下线
+            </Button>
+          )}
+
           <Popconfirm
             icon={null}
             title="确认要删除该条记录吗？"
             onOk={() => {
-              deleteNotice(record.id).then((res) => {
-                callback(record, 'del')
-              })
+              callback(record, 'del')
             }}>
             <Button type="text" size="small">
               删除
