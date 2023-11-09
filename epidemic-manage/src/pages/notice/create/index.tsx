@@ -1,6 +1,5 @@
 import * as React from 'react';
 import BraftEditor from 'braft-editor';
-import 'braft-editor/dist/index.css';
 import styles from './style/index.module.less';
 import {
   Modal,

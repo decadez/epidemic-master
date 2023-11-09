@@ -26,12 +26,10 @@ import {
   editNotice,
   getNoticeList,
 } from '@/service/notice.service'
-import 'braft-editor/dist/index.css'
 import BraftEditor from 'braft-editor'
 import dayjs from 'dayjs'
 import { useReactive } from 'ahooks'
 import { baseUrl } from '@/utils/request'
-import EditForm from '../create'
 
 const { Title } = Typography
 function SearchTable(props) {

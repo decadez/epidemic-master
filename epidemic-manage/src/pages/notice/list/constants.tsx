@@ -69,6 +69,7 @@ export function getColumns(
         }
         return <Badge status="warning" text={'未发布'}></Badge>
       },
+      sorter: (a, b) => b.status.localeCompare(a.status),
     },
     {
       title: t['menu.notice.action'],

@@ -84,3 +84,13 @@ export async function getNoticeList({
   }
   return false
 }
+
+export async function getCommonNoticeList() {
+  const res = await request(`/notice/commonList`, {
+    method: 'GET',
+  })
+  if (res) {
+    return res
+  }
+  return false
+}

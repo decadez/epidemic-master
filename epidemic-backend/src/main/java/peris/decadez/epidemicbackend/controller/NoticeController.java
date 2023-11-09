@@ -13,10 +13,9 @@ import peris.decadez.epidemicbackend.service.NoticeService;
 import peris.decadez.epidemicbackend.service.UserService;
 import peris.decadez.epidemicbackend.utils.TokenUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/notice")
@@ -47,8 +46,6 @@ public class NoticeController {
                                          @RequestParam(value = "creators[]", defaultValue = "") Integer[] creators,
                                          @RequestParam(value = "isOwnSelf", defaultValue = "false") Boolean isOwnSelf
     ) {
-        Long userId = Long.valueOf(TokenUtil.getTokenUserId());
-
         Map<String, Object> params = new HashMap<>();
         params.put("page", page);
         params.put("pageSize", pageSize);
@@ -73,6 +70,37 @@ public class NoticeController {
 
         Map<String, Object> noticeMap = noticeService.getNoticeList(params);
         return ResponseData.of(200, true, noticeMap);
+    }
+
+    @GetMapping("/commonList")
+    public ResponseData<?> getNoticeForUser(
+            @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "isOwnSelf", defaultValue = "false") Boolean isOwnSelf,
+            @RequestParam(value = "status[]", defaultValue = "OPEN") String[] status
+    ) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageSize", pageSize);
+        params.put("page", page);
+        params.put("isOwnSelf", isOwnSelf);
+
+        if (status.length != 0) {
+            params.put("status", status);
+        }
+
+        Map<String, Object> noticeMap = noticeService.getNoticeList(params);
+
+        List<Notice> notices = (List<Notice>) noticeMap.get("list");
+        List<Notice> curNoticeList = notices.stream()
+                .map(item -> {
+                    Notice notice = new Notice();
+                    notice.setTitle(String.valueOf(item.getTitle()));
+                    notice.setImgUrl(String.valueOf(item.getImgUrl()));
+                    notice.setContent(String.valueOf(item.getContent()));
+                    return notice;
+                }).collect(Collectors.toList());
+
+        return ResponseData.of(200, true, curNoticeList);
     }
 
     @UserLoginToken

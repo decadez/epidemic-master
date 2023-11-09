@@ -51,7 +51,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
   public Map<String, Object> getNoticeList(Map<String, Object> params) {
     IPage<Notice> pagination = new Page<>(Long.parseLong(params.get("page").toString()), Long.parseLong(params.get("pageSize").toString()));
     QueryWrapper<Notice> wrapper = new QueryWrapper<>();
-    wrapper.orderBy(true, false, "create_at");
+    wrapper.orderBy(true, false, "status","create_at");
 
     boolean isOwnSelf = Boolean.parseBoolean(params.get("isOwnSelf").toString());
     if (isOwnSelf) {
