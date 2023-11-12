@@ -1,8 +1,17 @@
 import request from '@/utils/request'
 
-
 export async function editNotice(notice: any) {
   const res = await request(`/notice/edit`, {
+    method: 'POST',
+    data: notice,
+  })
+  if (res) {
+    return res
+  }
+  return false
+}
+export async function publishNotice(notice: any) {
+  const res = await request(`/notice/publish`, {
     method: 'POST',
     data: notice,
   })

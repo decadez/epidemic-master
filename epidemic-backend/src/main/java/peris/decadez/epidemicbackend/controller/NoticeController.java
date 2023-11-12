@@ -3,18 +3,18 @@ package peris.decadez.epidemicbackend.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import peris.decadez.epidemicbackend.annotation.UserLoginToken;
 import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 import peris.decadez.epidemicbackend.entity.Notice;
 import peris.decadez.epidemicbackend.entity.User;
+import peris.decadez.epidemicbackend.service.NoticePushService;
 import peris.decadez.epidemicbackend.service.NoticeService;
 import peris.decadez.epidemicbackend.service.UserService;
 import peris.decadez.epidemicbackend.utils.TokenUtil;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,14 +26,15 @@ public class NoticeController {
     @Autowired
     UserService useService;
 
-    // @MessageMapping和@RequestMapping功能类似，用于设置URL映射地址，浏览器向服务器发起请求，需要通过该地址。
-    // 如果服务器接受到了消息，就会对订阅了@SendTo括号中的地址传送消息。
-    @MessageMapping("/notice/chat")
-    // 订阅地址
-    @SendTo("/topic/notice")
-    public Notice getNotice(Notice notice){
-        return notice;
+    @Autowired
+    private final NoticePushService noticePushService;
+
+    public NoticeController(NoticePushService noticePushService) {
+        this.noticePushService = noticePushService;
     }
+
+    @Autowired
+    private SimpMessageSendingOperations simpMessageSendingOperations;
 
     @UserLoginToken
     @GetMapping("/list")
@@ -69,6 +70,11 @@ public class NoticeController {
         }
 
         Map<String, Object> noticeMap = noticeService.getNoticeList(params);
+
+        if (noticeMap == null) {
+            return ResponseData.of(200, true, null);
+        }
+
         return ResponseData.of(200, true, noticeMap);
     }
 
@@ -90,6 +96,10 @@ public class NoticeController {
 
         Map<String, Object> noticeMap = noticeService.getNoticeList(params);
 
+        if (noticeMap == null) {
+            return ResponseData.of(200, true, null);
+        }
+
         List<Notice> notices = (List<Notice>) noticeMap.get("list");
         List<Notice> curNoticeList = notices.stream()
                 .map(item -> {
@@ -97,6 +107,7 @@ public class NoticeController {
                     notice.setTitle(String.valueOf(item.getTitle()));
                     notice.setImgUrl(String.valueOf(item.getImgUrl()));
                     notice.setContent(String.valueOf(item.getContent()));
+                    notice.setId(item.getId());
                     return notice;
                 }).collect(Collectors.toList());
 
@@ -123,8 +134,15 @@ public class NoticeController {
     }
 
     @UserLoginToken
-    @PostMapping("/send")
-    public ResponseData<?> sendNotice(@RequestBody Notice notice, HttpServletResponse response) {
+    @PostMapping("/publish")
+    public ResponseData<?> publishNotice(@RequestBody Notice notice, HttpServletResponse response) {
+        NoticeStatus status = notice.getStatus();
+        if (!List.of(NoticeStatus.OPEN, NoticeStatus.CLOSE).contains(status)) {
+            return ResponseData.of(200, false, false);
+        }
+
+        noticePushService.sendPushNotification(notice);
+        noticeService.updateNotice(notice);
         return ResponseData.of(200, true, true);
     }
 
