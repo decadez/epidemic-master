@@ -39,6 +39,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "redux-persist": "^6.0.0",
+    "sockjs-client": "^1.6.1",
+    "stomp-websocket": "2.3.4-next",
     "umi-request": "^1.4.0"
   },
   "devDependencies": {

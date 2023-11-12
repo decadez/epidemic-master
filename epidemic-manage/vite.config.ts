@@ -1,15 +1,21 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import svgrPlugin from '@arco-plugins/vite-plugin-svgr';
-import vitePluginForArco from '@arco-plugins/vite-react';
-import setting from './src/settings.json';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import svgrPlugin from '@arco-plugins/vite-plugin-svgr'
+import vitePluginForArco from '@arco-plugins/vite-react'
+import setting from './src/settings.json'
+
+var baseUrl = "http://localhost:8080";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server:  {
+  server: {
     hmr: {
-      overlay: false
-    }
+      overlay: false,
+    },
+    cors: {
+      origin: [baseUrl],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    },
   },
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
@@ -33,4 +39,4 @@ export default defineConfig({
       },
     },
   },
-});
+})

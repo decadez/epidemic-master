@@ -25,6 +25,7 @@ import {
   deleteNotice,
   editNotice,
   getNoticeList,
+  publishNotice,
 } from '@/service/notice.service'
 import BraftEditor from 'braft-editor'
 import dayjs from 'dayjs'
@@ -63,7 +64,7 @@ function SearchTable(props) {
       })
     }
     if (type === 'downline' || type === 'publish') {
-      editNotice({
+      publishNotice({
         ...record,
         status: type === 'downline' ? 'CLOSE' : 'OPEN',
       }).then((res) => {

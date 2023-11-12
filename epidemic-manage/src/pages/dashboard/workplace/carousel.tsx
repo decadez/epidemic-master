@@ -1,41 +1,57 @@
-import React from 'react';
-import { Carousel } from '@arco-design/web-react';
-import { getCommonNoticeList } from '@/service/notice.service';
-import { useRequest } from 'ahooks';
-import { baseUrl } from '@/utils/request';
+import React from 'react'
+import { Carousel, Typography, Skeleton, Spin } from '@arco-design/web-react'
+import { baseUrl } from '@/utils/request'
+import { useNoticeSubscribeList } from '@/hooks'
 
 function C() {
-  const { data, run, loading } = useRequest(getCommonNoticeList, {
-    manual: true,
-  })
-
-  React.useEffect(() => {
-    run();
-  }, [])
+  const { list, loading } = useNoticeSubscribeList()
 
   return (
-    <Carousel
-      indicatorType="slider"
-      showArrow="never"
-      autoPlay
+    <Skeleton
       style={{
         width: '100%',
         height: 160,
       }}
-    >
-      {data?.data?.map((item, index) => (
-        <div key={index}>
-          <img
-            src={baseUrl + item.imgUrl}
-            style={{
-              width: 280,
-              height: 160,
-            }}
-          />
-        </div>
-      ))}
-    </Carousel>
-  );
+      text={{ rows: 5, width: '100%' }}
+      animation
+      loading={loading}>
+      <Carousel
+        indicatorType="slider"
+        showArrow="never"
+        animation="fade"
+        autoPlay
+        style={{
+          borderRadius: 4,
+          height: list?.length ? 160 : 0,
+          overflow: 'hidden',
+        }}>
+        {list?.map((item, index) => (
+          <div key={index}>
+            <img
+              src={baseUrl + item.imgUrl}
+              style={{
+                width: 280,
+                height: '100%',
+              }}
+            />
+            <Typography.Title
+              heading={6}
+              style={{
+                position: 'absolute',
+                top: 10,
+                left: 10,
+                color: '#6d6161',
+              }}
+              ellipsis={{
+                wrapper: 'span',
+              }}>
+              {item.title}
+            </Typography.Title>
+          </div>
+        ))}
+      </Carousel>
+    </Skeleton>
+  )
 }
 
-export default C;
+export default C
