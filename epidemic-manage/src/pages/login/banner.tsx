@@ -3,7 +3,6 @@ import { Carousel, Spin } from '@arco-design/web-react'
 import useLocale from '@/utils/useLocale'
 import locale from './locale'
 import styles from './style/index.module.less'
-import { baseUrl } from '@/utils/request'
 import { useNoticeSubscribeList } from '@/hooks'
 export default function LoginBanner() {
   const t = useLocale(locale)
@@ -21,7 +20,7 @@ export default function LoginBanner() {
             <img
               alt="banner-image"
               className={styles['carousel-image']}
-              src={baseUrl + item.imgUrl}
+              src={item.imgUrl}
             />
           </div>
         </div>

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Carousel, Typography, Skeleton, Spin } from '@arco-design/web-react'
-import { baseUrl } from '@/utils/request'
 import { useNoticeSubscribeList } from '@/hooks'
 
 function C() {
@@ -28,7 +27,7 @@ function C() {
         {list?.map((item, index) => (
           <div key={index}>
             <img
-              src={baseUrl + item.imgUrl}
+              src={item.imgUrl}
               style={{
                 width: 280,
                 height: '100%',

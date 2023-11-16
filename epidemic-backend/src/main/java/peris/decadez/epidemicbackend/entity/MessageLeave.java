@@ -4,8 +4,12 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
 import lombok.Data;
+import peris.decadez.epidemicbackend.entity.Enum.MessageLeaveEnum;
 import peris.decadez.epidemicbackend.entity.Enum.MessageNature;
+import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -15,11 +19,15 @@ import java.sql.Timestamp;
 public class MessageLeave implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
+    private String creator;
     private String title;
-    private Long user_id ;
-    private MessageNature nature;
+    @Lob
+    @Column(name = "content", columnDefinition = "longtext")
     private String content;
-    private byte hasContactHistory;
+    @Lob
+    @Column(name = "messages", columnDefinition = "longtext")
+    private String messages;
+    private MessageLeaveEnum status;
     @TableField(fill = FieldFill.INSERT)
     private Timestamp createAt;
     @TableField(fill = FieldFill.UPDATE)

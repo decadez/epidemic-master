@@ -9,7 +9,6 @@ import {
 import dayjs from 'dayjs'
 import styles from './style/index.module.less'
 import { deleteNotice } from '@/service/notice.service'
-import { baseUrl } from '@/utils/request'
 
 const { Text } = Typography
 
@@ -37,7 +36,7 @@ export function getColumns(
       title: t['menu.notice.image'],
       dataIndex: 'imgUrl',
       render: (value) => (
-        <Image width={40} height={40} src={baseUrl + value} loader={true} />
+        <Image width={40} height={40} src={value} loader={true} />
       ),
     },
     {

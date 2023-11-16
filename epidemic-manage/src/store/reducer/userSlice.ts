@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import defaultSettings from '@/settings.json'
 import { login, getUserInfo } from '@/service/user.service'
 import { isEmpty } from 'lodash'
-import { baseUrl } from '@/utils/request'
 
 export interface UserState {
   settings?: typeof defaultSettings

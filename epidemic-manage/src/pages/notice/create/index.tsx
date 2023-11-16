@@ -65,7 +65,7 @@ const Create = (props) => {
               rules={[{ required: true, message: "请上传公告图片" }]}
             >
               <Upload
-                action={baseUrl + '/api/uploadImage'}
+                action={'/webapi/image/uploadImage'}
                 limit={1}
                 imagePreview={true}
                 listType='picture-card'

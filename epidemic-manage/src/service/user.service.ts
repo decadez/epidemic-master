@@ -5,7 +5,7 @@ export async function login(params: {
   email?: string;
   password: string;
 }) {
-  const res = await request(`/api/login`, {
+  const res = await request(`/user/login`, {
     method: "GET",
     params,
     noAccess: true,
