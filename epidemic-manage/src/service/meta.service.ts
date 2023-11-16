@@ -4,7 +4,7 @@ export async function uploadImage(image: File) {
   const fileData = new FormData;
   fileData.append('img', image);
 
-  const res = await request(`/api/uploadImage`, {
+  const res = await request(`/uploadImage`, {
     method: 'POST',
     body: JSON.stringify({ image: fileData }),
   })

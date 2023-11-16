@@ -20,7 +20,6 @@ import dayjs from 'dayjs'
 import { editUser } from '@/service/user.service'
 import { updateUserInfo } from '@/store/reducer/userSlice'
 import { useAppDispatch } from '@/store/hooks'
-import { baseUrl } from '@/utils/request'
 
 export default function Info({
   userInfo = {},
@@ -135,7 +134,7 @@ export default function Info({
         </Form>
       </Modal>
       <Upload
-        action={baseUrl + '/api/uploadImage'}
+        action={'/webapi/image/uploadImage'}
         showUploadList={false}
         onChange={onAvatarChange}>
         {loading ? (
@@ -145,7 +144,7 @@ export default function Info({
             size={100}
             triggerIcon={<IconCamera />}
             className={styles['info-avatar']}>
-            {avatar ? <img src={baseUrl + "/" + avatar} /> : <IconPlus />}
+            {avatar ? <img src={avatar} /> : <IconPlus />}
           </Avatar>
         )}
       </Upload>

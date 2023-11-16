@@ -30,7 +30,6 @@ import {
 import BraftEditor from 'braft-editor'
 import dayjs from 'dayjs'
 import { useReactive } from 'ahooks'
-import { baseUrl } from '@/utils/request'
 
 const { Title } = Typography
 function SearchTable(props) {
@@ -103,14 +102,14 @@ function SearchTable(props) {
           value: (
             <Upload
               disabled={record.status === 'CLOSE'}
-              action={baseUrl + '/api/uploadImage'}
+              action={'/webapi/image/uploadImage'}
               limit={1}
               onChange={onImgChange}
               imagePreview={true}
               defaultFileList={[
                 {
                   uid: record.id,
-                  url: baseUrl + record.imgUrl,
+                  url: record.imgUrl,
                 },
               ]}
               listType="picture-card"

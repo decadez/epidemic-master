@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS health;
 DROP TABLE IF EXISTS notice;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS message_leave;
 
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -26,6 +27,17 @@ CREATE TABLE notice (
     img_url VARCHAR(200) default NULL,
     content LONGTEXT default NULL,
     status ENUM('CLOSE','OPEN', 'NULL' ) default null,
+    create_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    edit_at timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE  message_leave(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    creator VARCHAR(20) NOT NULL,
+    title VARCHAR(200) default null,
+    content LONGTEXT default NULL,
+    messages LONGTEXT default NULL,
+    status ENUM('REPLIED', 'NULL' ) default null,
     create_at timestamp DEFAULT CURRENT_TIMESTAMP,
     edit_at timestamp DEFAULT CURRENT_TIMESTAMP
 );

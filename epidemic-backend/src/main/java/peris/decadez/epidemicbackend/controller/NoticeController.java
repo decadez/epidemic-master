@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/webapi/notice")
 public class NoticeController {
     @Autowired
     NoticeService noticeService;

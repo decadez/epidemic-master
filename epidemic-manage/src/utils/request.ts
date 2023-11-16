@@ -2,8 +2,6 @@ import Qs from 'query-string'
 import { extend } from 'umi-request';
 import { Message } from '@arco-design/web-react';
 
-export const baseUrl = 'http://localhost:8080';
-
 enum StatusCode {
   SUCCESS = 200,
   ERROR = 500,
@@ -23,7 +21,7 @@ interface ResponseStructure {
 const accessToken = JSON.parse(localStorage.getItem('persist:root'))?.token || '';
 
 const request = extend({
-  prefix: baseUrl,
+  prefix: '/webapi',
   headers: {
     'Content-Type': 'application/json',
     token: accessToken.substring(1, accessToken.length - 1),
