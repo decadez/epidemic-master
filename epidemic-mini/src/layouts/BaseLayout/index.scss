@@ -2,11 +2,10 @@
 .container {
   display: flex;
   background-color: $primary-color;
-
  
   .custom-navbar {
     padding: 10px;
-    height: 110px;
+    height: 100px;
     justify-content: space-around;
 
     .avatar {

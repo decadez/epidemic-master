@@ -50,11 +50,6 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label="序号" field="id">
-              <Input placeholder="请输入序号" allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={colSpan}>
             <Form.Item label="留言标题" field="name">
               <Input
                 allowClear
@@ -85,12 +80,12 @@ function SearchForm(props: {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label='言论性质' field="status">
+            <Form.Item label='言论性质' field="speechStatus">
               <Radio.Group
                 type="button"
                 options={[
-                  { label: '言论偏贬', value: 0 },
-                  { label: '言论偏褒', value: 1 },
+                  { label: '言论偏贬', value: "BAD" },
+                  { label: '言论偏褒', value: "GOOD"},
                 ]}
                 style={{ marginBottom: 16 }}
               />
