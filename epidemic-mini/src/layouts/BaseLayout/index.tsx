@@ -29,7 +29,7 @@ const routesMap = {
   },
   1: {
     path: '/pages/health',
-    icon: 'map-pin',
+    icon: 'heart',
     text: '健康打卡',
   },
   2: {
@@ -44,7 +44,12 @@ const routesMap = {
   },
 };
 
-export default function BaseLayout({ children }: React.PropsWithChildren) {
+type BaseLayoutProps = {
+  hideNav?: boolean;
+  children: React.ReactNode;
+}
+
+export default function BaseLayout({ children, hideNav = false }: React.PropsWithChildren & BaseLayoutProps) {
   const { path } = useRouter();
 
   const routesMapValues = Object.values(routesMap);
@@ -82,12 +87,12 @@ export default function BaseLayout({ children }: React.PropsWithChildren) {
 
   return (
     <View className="container">
-      {getNavBar()}
-      {children}
+      {!hideNav && getNavBar()}
+      <View className='content'>{children}</View>
       <AtTabBar
         fixed
-        backgroundColor="#ececec8a"
-        color="rgba(134, 144, 156, 1)"
+        backgroundColor="#ececec8"
+        color="rgb(134, 144, 156, 1)"
         selectedColor="rgba(22, 93, 255, 1)"
         tabList={Object.keys(routesMap).map((key) => {
           return {
