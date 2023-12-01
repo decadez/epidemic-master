@@ -1,3 +1,5 @@
+const path = require('path')
+
 const config = {
   projectName: 'epidemic-manage-mini',
   date: '2022-11-16',
@@ -6,12 +8,17 @@ const config = {
     640: 2.34 / 2,
     750: 1,
     828: 1.81 / 2,
-    375: 2 / 1
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: [],
   defineConstants: {
+  },
+  alias: {
+    "@src": path.resolve(__dirname, "..", "src"),
+    "@components": path.resolve(__dirname, "..", "src/components"),
+    "@utils": path.resolve(__dirname, "..", "src/utils"),
+    "@service": path.resolve(__dirname, "..", "src/service")
   },
   copy: {
     patterns: [
@@ -50,6 +57,14 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
+    output: {
+      filename: 'js/[name].[hash].js',
+      chunkFilename: 'js/[name].[chunkhash].js'
+    },
+    imageUrlLoaderOption: {
+      limit: 5000,
+      name: 'static/images/[name].[hash].[ext]'
+    },
     postcss: {
       autoprefixer: {
         enable: true,
