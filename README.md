@@ -19,9 +19,7 @@ taro + taro-ui + taro-request 实现的客户端用户界面
 
 ## E-R图
 
-
-
-<img src="./md-static/E-R.png" height="300" align="left">
+<img src="./md-static/E-R.png" height="300">
 
 ## 特别鸣谢
 - [<img src="./md-static/ArcoDesign.webp" height="30">ArcoDesign](https://www.iconfont.cn/user/detail?spm=a313x.7781069.1998910419.d9bd4f23f&uid=207078&nid=XqJypKOvb165) - 本系统前端UI库
