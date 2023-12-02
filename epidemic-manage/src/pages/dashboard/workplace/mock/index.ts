@@ -16,7 +16,7 @@ setupMock({
       return {
         allContents: '399',
         liveContents: '2',
-        increaseComments: '293',
+        increaseComments: '2',
         growthRate: '2.8%',
         chartData: getLineData(),
       };
@@ -68,17 +68,17 @@ setupMock({
     Mock.mock(new RegExp('/api/workplace/content-percentage'), () => {
       return [
         {
-          type: '未检测',
+          type: '未打卡',
           count: 30,
           percent: 0.1,
         },
         {
-          type: '阳性',
+          type: '异常',
           count: 54,
           percent: 0.18,
         },
         {
-          type: '正常',
+          type: '已打卡',
           count: 216,
           percent: 0.72,
         },

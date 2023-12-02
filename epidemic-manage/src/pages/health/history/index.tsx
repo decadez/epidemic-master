@@ -88,7 +88,7 @@ function HistoryHealth(props) {
       <PermissionWrapper
         backup={<NoAccess />}
         requiredPermissions={[
-          { resource: 'menu.history.health', actions: ['read'] },
+          { resource: 'menu.history.health', actions: ["write"] },
         ]}
       >
         <Title heading={6}>打卡历史列表</Title>

@@ -6,7 +6,7 @@ import CustomTooltip from './customer-tooltip';
 function OverviewAreaLine({
   data,
   loading,
-  name = '新增阳性人数',
+  name = '异常人群',
   color = '#4080FF',
 }: {
   data: any[];
