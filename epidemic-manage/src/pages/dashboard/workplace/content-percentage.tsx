@@ -28,7 +28,7 @@ function PopularContent() {
   return (
     <Card>
       <Typography.Title heading={6}>
-        全员核酸结果占比
+        全员打卡结果占比
       </Typography.Title>
       <Spin loading={loading} style={{ display: 'block' }}>
         <DonutChart

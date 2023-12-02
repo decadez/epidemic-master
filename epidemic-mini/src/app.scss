@@ -18,6 +18,14 @@ $primary-color: #d7c15d;
   background-color: transparent;
 }
 
+.bg-white {
+  background-color: white;
+}
+
+.border-radius-10 {
+  border-radius: 10px;
+}
+
 .flex_layout {
   display: flex;
   align-items: center;
@@ -25,7 +33,7 @@ $primary-color: #d7c15d;
 
 /* 各模块样式 start */
 
-/* home模块样式 */ 
+/* home模块样式 */
 .home-swiper {
   margin-top: 30px;
   border-radius: 30px;
@@ -37,7 +45,7 @@ $primary-color: #d7c15d;
   background-color: rgb(123, 130, 130);
 }
 
-/* user模块样式 */ 
+/* user模块样式 */
 .user-setting-item {
   opacity: 1;
   padding: 10px;
@@ -67,5 +75,54 @@ $primary-color: #d7c15d;
 /* 各模块样式 end */
 
 /* 通用组建样式 start */
+.message-list {
+  flex-direction: column;
+  margin: 20px 0;
+  .message-label {
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
 
+    .message-label-left {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .message-label-right {
+      font-size: 24px;
+      color: rgba(134, 144, 156, 1);
+    }
+  }
+
+  .message-list-content {
+    width: 100%;
+    margin-top: 10px;
+    .message-item {
+      margin-bottom: 10px;
+      .message-item-status {
+        align-items: center;
+        justify-content: space-between;
+        font-size: 23px;
+        color: #fff;
+        border-radius: 8px;
+        padding: 0 4px;
+        margin-right: 10px;
+        background: rgba(52, 199, 89, 1);
+        border: 1px solid rgba(77, 216, 101, 0.3);
+      }
+
+      .message-item-status-unreply {
+        background-color: rgba(247, 186, 30, 1);
+      }
+
+      .message-item-title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: calc(100% - 140px);
+        color: rgba(78, 89, 105, 1);
+        font-size: 22px;
+      }
+    }
+  }
+}
 /* 通用组建样式 end */

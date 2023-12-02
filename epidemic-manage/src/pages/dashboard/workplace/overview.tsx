@@ -90,7 +90,7 @@ function Overview() {
         <Col flex={1}>
           <StatisticItem
             icon={<IconCalendar />}
-            title='社区接种量'
+            title='当日打卡人数'
             count={data.allContents}
             loading={loading}
             unit='人'
@@ -100,7 +100,7 @@ function Overview() {
         <Col flex={1}>
           <StatisticItem
             icon={<IconContent />}
-            title='社区阳性新增'
+            title='异常人群'
             count={data.liveContents}
             loading={loading}
             unit='人'
@@ -110,17 +110,17 @@ function Overview() {
         <Col flex={1}>
           <StatisticItem
             icon={<IconComments />}
-            title='全员核酸当值'
+            title='异常体温比重'
             count={data.increaseComments}
             loading={loading}
-            unit='人'
+            unit='%'
           />
         </Col>
         <Divider type="vertical" className={styles.divider} />
         <Col flex={1}>
           <StatisticItem
             icon={<IconIncrease />}
-            title={t['workplace.growth']}
+            title={'打卡同比'}
             count={
               <span>
                 {data.growthRate}{' '}
@@ -140,7 +140,7 @@ function Overview() {
             className={styles['chart-title']}
             style={{ marginBottom: 0 }}
           >
-            社区新增阳性数据
+            社区打卡数据一览
             <span className={styles['chart-sub-title']}>
               ({t['workplace.1year']})
             </span>
