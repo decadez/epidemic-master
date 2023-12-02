@@ -18,4 +18,4 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 image:
-  path: D:\DECADEZ\epidemic-master\server-static\images
+  path: D:\DECADEZ\epidemic-master\server-static\images # 不同开发环境需要注意路径

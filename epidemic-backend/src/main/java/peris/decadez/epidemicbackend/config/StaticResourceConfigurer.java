@@ -8,6 +8,6 @@ public class StaticResourceConfigurer implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-               .addResourceLocations("file:///D:/DECADEZ/epidemic-master/server-static/");
+               .addResourceLocations("file:///D:/DECADEZ/epidemic-master/server-static/"); // 不同开发环境需要注意路径
     }
 }
