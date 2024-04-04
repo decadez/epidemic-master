@@ -48,7 +48,7 @@ CREATE TABLE  message_leave(
     title VARCHAR(200) default null,
     content LONGTEXT default NULL,
     messages LONGTEXT default NULL,
-    nature_of_speech ENUM('WAITING', 'GOD', "BAD" ) default 'WAITING',
+    nature_of_speech ENUM('WAITING', 'GOOD', "BAD" ) default 'WAITING',
     status ENUM('REPLIED', 'NULL' ) default null,
     create_at timestamp DEFAULT CURRENT_TIMESTAMP,
     session_id VARCHAR(200) default null,

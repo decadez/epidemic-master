@@ -28,6 +28,7 @@ public class MessageLeaveController {
                                          @RequestParam(value = "start", defaultValue = "") String start,
                                          @RequestParam(value = "end", defaultValue = "") String end,
                                          @RequestParam(value = "status[]", defaultValue = "") String[] status,
+                                         @RequestParam(value = "natureOfSpeech[]", defaultValue = "") String[] natureOfSpeech,
                                          @RequestParam(value = "creators[]", defaultValue = "") Integer[] creators,
                                          @RequestParam(value = "isOwnSelf", defaultValue = "false") Boolean isOwnSelf
     ) {
@@ -42,6 +43,9 @@ public class MessageLeaveController {
 
         if (status.length != 0) {
             params.put("status", status);
+        }
+        if (natureOfSpeech.length != 0) {
+            params.put("natureOfSpeech", natureOfSpeech);
         }
 
         if (!title.isEmpty()) {

@@ -47,6 +47,7 @@ function SearchTable(props) {
     status?: string[]
     creators?: number[]
     isOwnSelf?: boolean
+    natureOfSpeech?: string
   }>({});
 
   useEffect(() => {
@@ -55,12 +56,13 @@ function SearchTable(props) {
 
   async function fetchData() {
     const { current, pageSize } = pagination;
-    const { title, createAt, status, creators, isOwnSelf } = formParams
+    const { title, createAt, status, creators, isOwnSelf, natureOfSpeech } = formParams
     setLoading(true);
     const res = await getMessageList({
       page: current,
       pageSize,
       title,
+      natureOfSpeech: [natureOfSpeech],
       start: createAt?.[0],
       end: createAt?.[1],
       creators,

@@ -61,7 +61,7 @@ export function getColumns(
         if ("BAD" === x as keyof typeof NatureOfSpeech) {
           return <Badge status="error" text={NatureOfSpeech[x]}></Badge>;
         }
-        return <Badge status="default" text={NatureOfSpeech[x]}></Badge>;
+        return <Badge status="processing" text={NatureOfSpeech[x] || '分析中'}></Badge>;
       },
     },
     {

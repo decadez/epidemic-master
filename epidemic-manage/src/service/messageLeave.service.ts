@@ -73,6 +73,7 @@ export async function getMessageList({
   status,
   creators,
   isOwnSelf,
+  natureOfSpeech,
 }: {
   isOwnSelf?: boolean
   page?: number
@@ -82,6 +83,7 @@ export async function getMessageList({
   end?: string
   creators?: number[]
   status?: string[]
+  natureOfSpeech?: [string]
 }) {
   const res = await request(`/leaveMessage/list`, {
     method: 'GET',
@@ -94,6 +96,7 @@ export async function getMessageList({
       status,
       creators,
       isOwnSelf,
+      natureOfSpeech
     },
   })
   if (res) {

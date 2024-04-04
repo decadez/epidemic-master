@@ -12,7 +12,7 @@ import peris.decadez.epidemicbackend.entity.Notice;
 import peris.decadez.epidemicbackend.mapper.NoticeMapper;
 import peris.decadez.epidemicbackend.service.NoticeService;
 import peris.decadez.epidemicbackend.utils.TokenUtil;
-
+import peris.decadez.epidemicbackend.utils.CommonUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,27 +22,6 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
   @Autowired
   NoticeMapper noticeMapper;
 
-  public static NoticeStatus[] parseStringArray(String[] strings) {
-    try {
-      Class<NoticeStatus> noticeStatus = NoticeStatus.class;
-      NoticeStatus[] enumConstants = noticeStatus.getEnumConstants();
-
-      NoticeStatus[] result = new NoticeStatus[strings.length];
-      for (int i = 0; i < strings.length; i++) {
-        for (int j = 0; j < enumConstants.length; j++) {
-          if (enumConstants[j].name().equals(strings[i])) {
-            result[i] = enumConstants[j];
-            break;
-          }
-        }
-      }
-
-      return result;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
   @Override
   public Map<String, Object> getNoticeList(Map<String, Object> params) {
     IPage<Notice> pagination = new Page<>(Long.parseLong(params.get("page").toString()), Long.parseLong(params.get("pageSize").toString()));
@@ -62,7 +41,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
     if (params.get("status") != null) {
       String[] statusArray = (String[]) params.get("status");
-      NoticeStatus[] enumArray = parseStringArray(statusArray);
+      NoticeStatus[] enumArray = CommonUtils.parseStringArray(statusArray, NoticeStatus.class);
       wrapper.in("status", enumArray);
     }
 

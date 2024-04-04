@@ -50,7 +50,7 @@ function SearchForm(props: {
       >
         <Row gutter={24}>
           <Col span={colSpan}>
-            <Form.Item label="留言标题" field="name">
+            <Form.Item label="留言标题" field="title">
               <Input
                 allowClear
                 placeholder={t['menu.notice.title.placeholder']}
@@ -58,7 +58,7 @@ function SearchForm(props: {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label={t['menu.notice.createTime']} field="createdTime">
+            <Form.Item label={t['menu.notice.createTime']} field="createAt">
               <DatePicker.RangePicker
                 allowClear
                 style={{ width: '100%' }}
@@ -80,7 +80,7 @@ function SearchForm(props: {
             </Form.Item>
           </Col>
           <Col span={colSpan}>
-            <Form.Item label='言论性质' field="speechStatus">
+            <Form.Item label='言论性质' field="natureOfSpeech">
               <Radio.Group
                 type="button"
                 options={Object.keys(NatureOfSpeech).map((item) => ({

@@ -8,6 +8,18 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 0 # 几号库
+    lettuce:
+      pool:
+        max-active: 8 # 最大连接
+        max-idle: 8 # 最大空闲连接
+        min-idle: 0 # 最小空闲连接
+        max-wait: 100ms # 连接等待时间}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -22,4 +34,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 image:
-  path: D:\DECADEZ\epidemic-master\server-static\images # 不同开发环境需要注意路径
+  #  win 不同开发环境需要注意路径
+#  path: D:\DECADEZ\epidemic-master\server-static\images
+  # mac
+  path: /Users/decadez/Desktop/my-project/epidemic-master/server-static/images
