@@ -16,6 +16,7 @@ import locale from './locale';
 import styles from './style/index.module.less';
 import './mock';
 import { getColumns } from './constants';
+import { getMessageList } from '@/service/messageLeave.service';
 
 const { Title } = Typography;
 export const ContentType = ['图文', '横版短视频', '竖版短视频'];
@@ -40,32 +41,40 @@ function SearchTable(props) {
     pageSizeChangeResetCurrent: true,
   });
   const [loading, setLoading] = useState(true);
-  const [formParams, setFormParams] = useState({});
+  const [formParams, setFormParams] = useState<{
+    createAt?: [string, string]
+    title?: string
+    status?: string[]
+    creators?: number[]
+    isOwnSelf?: boolean
+  }>({});
 
   useEffect(() => {
     fetchData();
   }, [pagination.current, pagination.pageSize, JSON.stringify(formParams)]);
 
-  function fetchData() {
+  async function fetchData() {
     const { current, pageSize } = pagination;
+    const { title, createAt, status, creators, isOwnSelf } = formParams
     setLoading(true);
-    request.get('/api/workplace/popular-contents', {
-        params: {
-          page: current,
-          pageSize,
-          ...formParams,
-        },
-      })
-      .then((res) => {
-        setData(res.data.list);
-        setPatination({
-          ...pagination,
-          current,
-          pageSize,
-          total: res.data.total,
-        });
-        setLoading(false);
-      });
+    const res = await getMessageList({
+      page: current,
+      pageSize,
+      title,
+      start: createAt?.[0],
+      end: createAt?.[1],
+      creators,
+      status,
+      isOwnSelf,
+    })
+    setData(res.data?.list);
+    setPatination({
+      ...pagination,
+      current,
+      pageSize,
+      total: res.data?.total,
+    });
+    setLoading(false);
   }
 
   function onChangeTable({ current, pageSize }) {

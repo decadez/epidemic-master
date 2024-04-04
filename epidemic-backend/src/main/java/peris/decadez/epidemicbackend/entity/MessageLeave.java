@@ -9,6 +9,7 @@ import jakarta.persistence.Lob;
 import lombok.Data;
 import peris.decadez.epidemicbackend.entity.Enum.MessageLeaveEnum;
 import peris.decadez.epidemicbackend.entity.Enum.MessageNature;
+import peris.decadez.epidemicbackend.entity.Enum.NatureOfSpeehEnum;
 import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 
 import java.io.Serializable;
@@ -27,7 +28,9 @@ public class MessageLeave implements Serializable {
     @Lob
     @Column(name = "messages", columnDefinition = "longtext")
     private String messages;
+    private String sessionId;
     private MessageLeaveEnum status;
+    private NatureOfSpeehEnum natureOfSpeech;
     @TableField(fill = FieldFill.INSERT)
     private Timestamp createAt;
     @TableField(fill = FieldFill.UPDATE)

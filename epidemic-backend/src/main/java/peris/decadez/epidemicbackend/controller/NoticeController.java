@@ -1,5 +1,8 @@
 package peris.decadez.epidemicbackend.controller;
 
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -8,6 +11,7 @@ import peris.decadez.epidemicbackend.annotation.UserLoginToken;
 import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 import peris.decadez.epidemicbackend.entity.Notice;
 import peris.decadez.epidemicbackend.entity.User;
+import peris.decadez.epidemicbackend.service.GPTService;
 import peris.decadez.epidemicbackend.service.NoticePushService;
 import peris.decadez.epidemicbackend.service.NoticeService;
 import peris.decadez.epidemicbackend.service.UserService;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/webapi/notice")
 public class NoticeController {
+
     @Autowired
     NoticeService noticeService;
 

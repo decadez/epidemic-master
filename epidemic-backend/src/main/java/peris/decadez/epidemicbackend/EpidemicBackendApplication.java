@@ -22,6 +22,16 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import java.util.concurrent.Semaphore;
+import com.alibaba.dashscope.aigc.generation.Generation;
+import com.alibaba.dashscope.aigc.generation.GenerationResult;
+import com.alibaba.dashscope.aigc.generation.models.QwenParam;
+import com.alibaba.dashscope.common.ResultCallback;
+import com.alibaba.dashscope.exception.ApiException;
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.alibaba.dashscope.utils.JsonUtils;
+
 @SpringBootApplication
 @MapperScan("peris.decadez.epidemicbackend.mapper")
 public class EpidemicBackendApplication {

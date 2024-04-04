@@ -29,9 +29,9 @@ export default function MessageList(props: any) {
         <View className='message-label-right'>查看更多<AtIcon value={'chevron-right'}/></View>
       </View>
       <View className="message-list-content">
-        {data?.map((item) => {
+        {data?.map((item, key) => {
           return (
-            <View className="message-item flex_layout">
+            <View key={String(key)} className="message-item flex_layout">
               <View className={`message-item-status ${item.status === '未回复' && 'message-item-status-unreply'}`}>{item.status}</View>
               <View className="message-item-title">{item.title}</View>
             </View>

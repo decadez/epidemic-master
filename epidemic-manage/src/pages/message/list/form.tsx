@@ -13,7 +13,7 @@ import { GlobalContext } from '@/context';
 import locale from './locale';
 import useLocale from '@/utils/useLocale';
 import { IconRefresh, IconSearch } from '@arco-design/web-react/icon';
-import { Status } from './constants';
+import { NatureOfSpeech, Status } from './constants';
 import styles from './style/index.module.less';
 
 const { Row, Col } = Grid;
@@ -70,9 +70,9 @@ function SearchForm(props: {
             <Form.Item label={t['menu.notice.status']} field="status">
               <Select
                 placeholder={t['menu.notice.status.placeholder']}
-                options={Status.map((item, index) => ({
-                  label: item,
-                  value: index,
+                options={Object.keys(Status).map((item) => ({
+                  label: Status[item],
+                  value: item,
                 }))}
                 mode="multiple"
                 allowClear
@@ -83,10 +83,10 @@ function SearchForm(props: {
             <Form.Item label='言论性质' field="speechStatus">
               <Radio.Group
                 type="button"
-                options={[
-                  { label: '言论偏贬', value: "BAD" },
-                  { label: '言论偏褒', value: "GOOD"},
-                ]}
+                options={Object.keys(NatureOfSpeech).map((item) => ({
+                  label: NatureOfSpeech[item],
+                  value: item,
+                }))}
                 style={{ marginBottom: 16 }}
               />
             </Form.Item>
