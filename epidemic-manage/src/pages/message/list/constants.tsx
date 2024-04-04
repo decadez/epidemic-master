@@ -1,20 +1,27 @@
-import React from 'react';
-import { Button, Typography, Badge } from '@arco-design/web-react';
+import { Badge, Button, Typography } from '@arco-design/web-react';
 import dayjs from 'dayjs';
-import styles from './style/index.module.less';
 
 const { Text } = Typography;
 
-export const Status = ['未回复', '已回复'];
+export enum Status {
+  NULL = '未回复',
+  REPLIED = '已回复',
+}
+
+export enum NatureOfSpeech {
+  WAITING = '分析中',
+  GOOD = '言论偏褒',
+  BAD = '言论偏贬',
+}
 
 export function getColumns(
   t: any,
-  callback: (record: Record<string, any>, type: string) => Promise<void>
+  callback: (record: Record<string, any>, type: string) => Promise<void>,
 ) {
   return [
     {
-      title: '序号',
-      dataIndex: 'rank',
+      title: 'ID',
+      dataIndex: 'id',
       width: 65,
     },
     {
@@ -27,20 +34,44 @@ export function getColumns(
       ),
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      render: (x) => dayjs().subtract(x, 'days').format('YYYY-MM-DD HH:mm:ss'),
-      sorter: (a, b) => b.createTime - a.createTime,
+      title: '创建人',
+      dataIndex: 'creator',
+    },
+    {
+      title: t['menu.notice.createTime'],
+      dataIndex: 'createAt',
+      render: (x) => dayjs(x).format('YYYY-MM-DD HH:mm:ss'),
+      sorter: (a, b) =>
+        dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf(),
+    },
+    {
+      title: '编辑时间',
+      dataIndex: 'editAt',
+      render: (x) => dayjs(x).format('YYYY-MM-DD HH:mm:ss'),
+      sorter: (a, b) => dayjs(b.editAt).valueOf() - dayjs(a.editAt).valueOf(),
+    },
+    {
+      title: '言论性质',
+      dataIndex: 'natureOfSpeech',
+      width: 100,
+      render: (x) => {
+        if ("GOOD" === x as keyof typeof NatureOfSpeech) {
+          return <Badge status="success" text={NatureOfSpeech[x]}></Badge>;
+        }
+        if ("BAD" === x as keyof typeof NatureOfSpeech) {
+          return <Badge status="error" text={NatureOfSpeech[x]}></Badge>;
+        }
+        return <Badge status="default" text={NatureOfSpeech[x]}></Badge>;
+      },
     },
     {
       title: '状态',
-      dataIndex: 'pv',
-      width: 100,
+      dataIndex: 'status',
       render: (x) => {
-        if (x === 0) {
-          return <Badge status="warning" text="未回复"></Badge>;
+        if ("NULL" === x as keyof typeof Status) {
+          return <Badge status="default" text={Status[x]}></Badge>;
         }
-        return <Badge status="success" text="已回复"></Badge>;
+        return <Badge status="success" text={Status[x]}></Badge>;
       },
     },
     {
@@ -48,10 +79,7 @@ export function getColumns(
       dataIndex: 'action',
       headerCellStyle: { paddingLeft: '15px' },
       render: (_, record) => (
-        <Button
-          type="text"
-          size="small"
-        >
+        <Button type="text" size="small">
           查看对话
         </Button>
       ),

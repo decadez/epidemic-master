@@ -1,8 +1,6 @@
 package peris.decadez.epidemicbackend.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +14,6 @@ import java.util.Map;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-  Logger logger = LoggerFactory.getLogger(getClass());
 
   @Autowired
   UserMapper userMapper;
@@ -46,7 +43,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
     List<User> users = userMapper.selectByMap(columnsMap);
     if (!users.isEmpty() && user.getPassword().equals(users.get(0).getPassword())) {
-      logger.info("Login success by {} -> {}", user.getEmail() != null ? "email" : "username" ,user.getEmail() != null ? user.getEmail() : user.getUsername());
       return users.get(0);
     }
     return null;

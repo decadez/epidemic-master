@@ -45,6 +45,20 @@ $primary-color: #d7c15d;
   background-color: rgb(123, 130, 130);
 }
 
+.notice-swiper {
+  height: 40px * 2;
+  line-height: 40px * 2;
+}
+
+.custom-empty__image {
+  width: 90px;
+  height: 90px;
+}
+
+.custom-empty__dec {
+  color: #fff;
+}
+
 /* user模块样式 */
 .user-setting-item {
   opacity: 1;

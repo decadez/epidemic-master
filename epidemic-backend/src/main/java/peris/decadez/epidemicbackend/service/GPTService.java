@@ -1,74 +1,71 @@
 package peris.decadez.epidemicbackend.service;
 
-import com.google.gson.Gson;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import cn.hutool.json.JSONObject;
+import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
+
+import com.alibaba.dashscope.aigc.generation.Generation;
+import com.alibaba.dashscope.aigc.generation.GenerationResult;
+import com.alibaba.dashscope.aigc.generation.models.QwenParam;
+import com.alibaba.dashscope.exception.ApiException;
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.alibaba.dashscope.utils.JsonUtils;
 
 @Service
 public class GPTService {
+    private static Logger logger = LoggerFactory.getLogger(GPTService.class);
     private static final String API_URL = "https://api.openaliyun.com/gpt3.5/chitown";
-    private static final String API_KEY = "your_api_key";
-    private static final String API_SECRET = "your_api_secret";
+    private static final String API_KEY = "sk-7b5898d57c1f43959303bda6c9230b88";
+    private static final QwenParam.QwenParamBuilder<?, ?> QWEN_PARAM_BUILDER = QwenParam.builder().model(Generation.Models.QWEN_TURBO).apiKey(API_KEY);
 
-    public String inference(String prompt) throws IOException {
-        Gson gson = new Gson();
-
-        // 构建请求
-        HttpPost httpPost = new HttpPost(API_URL);
-        StringEntity requestEntity = new StringEntity(gson.toJson(new ChatRequest(prompt)));
-        httpPost.setEntity(requestEntity);
-        httpPost.setHeader("Content-Type", "application/json");
-        httpPost.setHeader("Authorization", getAuthorization());
-
-        // 发送请求并获取响应
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        CloseableHttpResponse response = httpClient.execute(httpPost);
+    public static JsonObject aiTask(String prompt) {
         try {
-            HttpEntity entity = response.getEntity();
-            String responseJson = EntityUtils.toString(entity);
-            ChatResponse chatResponse = gson.fromJson(responseJson, ChatResponse.class);
-            return chatResponse.choices.get(0).text;
-        } finally {
-            response.close();
-            httpPost.releaseConnection();
+            return qwenQuickStart(prompt);
+        } catch (ApiException | NoApiKeyException | InputRequiredException e) {
+            System.out.println(String.format("Exception %s", e.getMessage()));
         }
+        return null;
     }
 
-    private String getAuthorization() {
-        return "Key-" + API_KEY + ":" + API_SECRET;
+    public static JsonObject qwenQuickStart(String prompt)
+            throws NoApiKeyException, ApiException, InputRequiredException {
+        Generation gen = new Generation();
+        QwenParam param = QWEN_PARAM_BUILDER.prompt(prompt)
+                .topP(0.8).build();
+        GenerationResult result = gen.call(param);
+        logger.info("通义千问 -> {}", JsonUtils.toJsonObject(result));
+        return JsonUtils.toJsonObject(result);
     }
 
-    // 请求和响应的POJO类
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class ChatRequest {
-        private String prompt;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class ChatResponse {
-        private List<ChatResponseItem> choices;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class ChatResponseItem {
-        private String text;
-    }
+//    public static void qwenQuickStartCallback(String prompt)
+//            throws NoApiKeyException, ApiException, InputRequiredException, InterruptedException {
+//        Generation gen = new Generation();
+//        QwenParam param = QWEN_PARAM_BUILDER.prompt(prompt)
+//                .topP(0.8).build();
+//        Semaphore semaphore = new Semaphore(0);
+//        gen.call(param, new ResultCallback<GenerationResult>() {
+//
+//            @Override
+//            public void onEvent(GenerationResult message) {
+//                System.out.println(message);
+//            }
+//            @Override
+//            public void onError(Exception ex){
+//                System.out.println(ex.getMessage());
+//                semaphore.release();
+//            }
+//            @Override
+//            public void onComplete(){
+//                System.out.println("onComplete");
+//                semaphore.release();
+//            }
+//
+//        });
+//        semaphore.acquire();
+//    }
 }

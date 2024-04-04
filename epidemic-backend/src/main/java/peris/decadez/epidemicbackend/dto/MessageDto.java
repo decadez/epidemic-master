@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 // 在此层进行参数验证,不直接将请求体参数传递到Service层
 
 @Data
-
 public class MessageDto implements Serializable {
 
     @Serial

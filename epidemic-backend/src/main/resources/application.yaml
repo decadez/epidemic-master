@@ -7,6 +7,10 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
   sql:
     init:
       schema-locations: classpath:db/schema.sql
