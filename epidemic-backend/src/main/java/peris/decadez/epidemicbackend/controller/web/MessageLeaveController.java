@@ -1,4 +1,4 @@
-package peris.decadez.epidemicbackend.controller;
+package peris.decadez.epidemicbackend.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import peris.decadez.epidemicbackend.annotation.UserLoginToken;
+import peris.decadez.epidemicbackend.controller.ResponseData;
 import peris.decadez.epidemicbackend.service.MessageLeaveService;
 
 import java.util.HashMap;

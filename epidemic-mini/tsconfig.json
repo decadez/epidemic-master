@@ -23,7 +23,7 @@
     ],
     "paths": {
       "@components": [
-        "src/components/"
+        "src/components"
       ],
       "@components/*": [
         "src/components/*"
@@ -41,7 +41,7 @@
         "src/service/*"
       ],
       "@src": [
-        "src/"
+        "src"
       ],
       "@src/*": [
         "src/*"

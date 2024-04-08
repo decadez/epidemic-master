@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/epidemic?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password:
+    password: decadez
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   redis:
@@ -35,6 +35,6 @@ mybatis-plus:
 
 image:
   #  win 不同开发环境需要注意路径
-#  path: D:\DECADEZ\epidemic-master\server-static\images
+  path: D:\DECADEZ\epidemic-master\server-static\images
   # mac
-  path: /Users/decadez/Desktop/my-project/epidemic-master/server-static/images
+#  path: /Users/decadez/Desktop/my-project/epidemic-master/server-static/images

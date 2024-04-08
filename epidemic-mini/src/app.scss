@@ -89,9 +89,28 @@ $primary-color: #d7c15d;
 /* 各模块样式 end */
 
 /* 通用组建样式 start */
+
+.no-permission {
+  margin: 100px 0;
+  flex-direction: column;
+  .blocked {
+    color: rgb(72, 76, 72);
+    padding: 30px;
+    font-size: 80px;
+  }
+}
 .message-list {
   flex-direction: column;
   margin: 20px 0;
+  text-align: center;
+  .check-good {
+    border-radius: 100px;
+    border: 1px solid;
+    color: #165dff;
+    background: #165dff24;
+    padding: 30px;
+    font-size: 80px;
+  }
   .message-label {
     width: 100%;
     align-items: center;

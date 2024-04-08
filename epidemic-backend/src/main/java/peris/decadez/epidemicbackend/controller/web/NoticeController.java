@@ -1,4 +1,4 @@
-package peris.decadez.epidemicbackend.controller;
+package peris.decadez.epidemicbackend.controller.web;
 
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
 import peris.decadez.epidemicbackend.annotation.UserLoginToken;
+import peris.decadez.epidemicbackend.controller.ResponseData;
 import peris.decadez.epidemicbackend.entity.Enum.NoticeStatus;
 import peris.decadez.epidemicbackend.entity.Notice;
 import peris.decadez.epidemicbackend.entity.User;

@@ -1,9 +1,13 @@
 export default defineAppConfig({
   pages: [
+    'pages/chat',
     'pages/home',
     'pages/user',
     'pages/health',
+    'pages/health-list',
     'pages/feedback',
+    'pages/feedback-list',
+    'pages/no-permission',
   ],
   window: {
     backgroundTextStyle: 'light',

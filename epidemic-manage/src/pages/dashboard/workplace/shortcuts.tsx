@@ -1,49 +1,44 @@
-import React from 'react';
+import useLocale from '@/utils/useLocale';
+import { Card, Link, Message, Typography } from '@arco-design/web-react';
 import {
-  Link,
-  Card,
-  Divider,
-  Message,
-  Typography,
-} from '@arco-design/web-react';
-import {
-  IconPlus,
+  IconHeart,
   IconList,
   IconMessage,
+  IconPlus,
   IconSettings,
-  IconHeart,
 } from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/shortcuts.module.less';
+import { useHistory } from 'react-router-dom';
 
 function Shortcuts() {
   const t = useLocale(locale);
+  const history = useHistory();
 
   const shortcuts = [
     {
       title: '公告创建',
-      key: 'Content Management',
+      key: '/notice/create',
       icon: <IconPlus />,
     },
     {
       title: '公告列表',
-      key: 'Content Statistic',
+      key: '/notice/list',
       icon: <IconList />,
     },
     {
       title: '留言回复',
-      key: 'Advanced Management',
+      key: '/message/list',
       icon: <IconMessage />,
     },
     {
       title: '健康打卡',
-      key: 'Online Promotion',
+      key: '/health/history',
       icon: <IconHeart />,
     },
     {
       title: '个人中心',
-      key: 'Marketing',
+      key: '/user/setting',
       icon: <IconSettings />,
     },
   ];
@@ -67,18 +62,17 @@ function Shortcuts() {
   ];
 
   function onClickShortcut(key) {
-    Message.info({
-      content: (
-        <span>
-          You clicked <b>{key}</b>
-        </span>
-      ),
-    });
+    history.push(`${key}`)
   }
 
   return (
     <Card>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        }}>
         <Typography.Title heading={6}>
           {t['workplace.shortcuts']}
         </Typography.Title>
@@ -89,8 +83,7 @@ function Shortcuts() {
           <div
             className={styles.item}
             key={shortcut.key}
-            onClick={() => onClickShortcut(shortcut.key)}
-          >
+            onClick={() => onClickShortcut(shortcut.key)}>
             <div className={styles.icon}>{shortcut.icon}</div>
             <div className={styles.title}>{shortcut.title}</div>
           </div>

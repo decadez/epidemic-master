@@ -28,7 +28,6 @@ public class MessageLeave implements Serializable {
     @Lob
     @Column(name = "messages", columnDefinition = "longtext")
     private String messages;
-    private String sessionId;
     private MessageLeaveEnum status;
     private NatureOfSpeehEnum natureOfSpeech;
     @TableField(fill = FieldFill.INSERT)

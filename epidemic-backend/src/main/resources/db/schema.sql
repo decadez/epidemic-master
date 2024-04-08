@@ -51,7 +51,6 @@ CREATE TABLE  message_leave(
     nature_of_speech ENUM('WAITING', 'GOOD', "BAD" ) default 'WAITING',
     status ENUM('REPLIED', 'NULL' ) default null,
     create_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    session_id VARCHAR(200) default null,
     edit_at timestamp DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '消息通知表';
 

@@ -11,9 +11,9 @@ public class MetaDataHandler implements MetaObjectHandler {
 
   @Override
   public void insertFill(MetaObject metaObject) {
-    this.setFieldValByName("createAt", new Timestamp(System.currentTimeMillis()),metaObject);
-    this.setFieldValByName("editAt", new Timestamp(System.currentTimeMillis()),metaObject);
-
+    Timestamp timestamp =  new Timestamp(System.currentTimeMillis());
+    this.setFieldValByName("createAt", timestamp, metaObject);
+    this.setFieldValByName("editAt", timestamp, metaObject);
   }
 
   @Override

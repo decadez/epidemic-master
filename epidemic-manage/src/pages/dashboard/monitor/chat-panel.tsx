@@ -11,7 +11,7 @@ import { IconDownload, IconFaceSmileFill } from '@arco-design/web-react/icon';
 import request from 'axios';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
-import MessageList from './message-list';
+import MessageList from '@/pages/message/list';
 import styles from './style/index.module.less';
 
 export default function ChatPanel() {
@@ -59,7 +59,7 @@ export default function ChatPanel() {
       </div>
       <div className={styles['chat-panel-content']}>
         <Spin loading={loading} style={{ width: '100%' }}>
-          <MessageList data={messageList} />
+          <MessageList />
         </Spin>
       </div>
       <div className={styles['chat-panel-footer']}>

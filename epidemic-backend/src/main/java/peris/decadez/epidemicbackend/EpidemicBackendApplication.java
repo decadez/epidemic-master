@@ -64,5 +64,4 @@ public class EpidemicBackendApplication {
     methodValidationPostProcessor.setValidator(validator);
     return methodValidationPostProcessor;
   }
-
 }

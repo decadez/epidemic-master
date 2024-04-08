@@ -4,6 +4,7 @@ import cn.hutool.json.JSONObject;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -23,6 +24,7 @@ public class GPTService {
     private static final String API_KEY = "sk-7b5898d57c1f43959303bda6c9230b88";
     private static final QwenParam.QwenParamBuilder<?, ?> QWEN_PARAM_BUILDER = QwenParam.builder().model(Generation.Models.QWEN_TURBO).apiKey(API_KEY);
 
+    @Async
     public static JsonObject aiTask(String prompt) {
         try {
             return qwenQuickStart(prompt);

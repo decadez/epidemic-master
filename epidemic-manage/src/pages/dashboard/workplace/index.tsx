@@ -7,6 +7,7 @@ import Shortcuts from './shortcuts'
 import Announcement from './announcement'
 import Carousel from './carousel'
 import styles from './style/index.module.less'
+import MessageList from '@/pages/message/list';
 import './mock'
 
 const { Row, Col } = Grid
@@ -20,7 +21,7 @@ function Workplace() {
         <Overview />
         <Row gutter={gutter}>
           <Col span={12}>
-            <PopularContents />
+            <MessageList hideSearch title="社区留言"/>
           </Col>
           <Col span={12}>
             <ContentPercentage />

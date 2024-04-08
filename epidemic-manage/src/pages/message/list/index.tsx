@@ -5,16 +5,13 @@ import {
   PaginationProps,
   Button,
   Space,
+  Link,
   Typography,
 } from '@arco-design/web-react';
 import PermissionWrapper from '@/components/PermissionWrapper';
-import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
-import request from 'axios';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
 import locale from './locale';
-import styles from './style/index.module.less';
-import './mock';
 import { getColumns } from './constants';
 import { getMessageList } from '@/service/messageLeave.service';
 
@@ -23,7 +20,13 @@ export const ContentType = ['图文', '横版短视频', '竖版短视频'];
 export const FilterType = ['规则筛选', '人工'];
 export const Status = ['已上线', '未上线'];
 
-function SearchTable(props) {
+interface ISearchTable {
+  hideSearch?: boolean;
+  title?: React.ReactNode;
+  href?: string;
+}
+
+function SearchTable(props: ISearchTable) {
   const t = useLocale(locale);
 
   const tableCallback = async (record, type) => {
@@ -94,8 +97,16 @@ function SearchTable(props) {
 
   return (
     <Card>
-      <Title heading={6}>留言列表</Title>
-      <SearchForm onSearch={handleSearch} />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        }}>
+        <Title heading={6}>{props.title || '留言列表'}</Title>
+        <Link href={'/message/list'}>查看更多</Link>
+      </div>
+      {!props.hideSearch && <SearchForm onSearch={handleSearch} />}
       <PermissionWrapper
         requiredPermissions={[
           { resource: 'menu.list.searchTable', actions: ['write'] },

@@ -1,4 +1,4 @@
-package peris.decadez.epidemicbackend.controller;
+package peris.decadez.epidemicbackend.controller.web;
 
 import cn.hutool.json.JSONObject;
 import jakarta.servlet.http.Cookie;
@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import peris.decadez.epidemicbackend.annotation.UserLoginToken;
+import peris.decadez.epidemicbackend.controller.ResponseData;
 import peris.decadez.epidemicbackend.entity.Enum.GenderEnum;
 import peris.decadez.epidemicbackend.entity.User;
 import peris.decadez.epidemicbackend.service.TokenService;

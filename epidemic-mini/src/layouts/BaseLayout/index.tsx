@@ -47,9 +47,12 @@ const routesMap = {
 type BaseLayoutProps = {
   hideNav?: boolean;
   children: React.ReactNode;
-}
+};
 
-export default function BaseLayout({ children, hideNav = false }: React.PropsWithChildren & BaseLayoutProps) {
+export default function BaseLayout({
+  children,
+  hideNav = false,
+}: React.PropsWithChildren & BaseLayoutProps) {
   const { path } = useRouter();
 
   const routesMapValues = Object.values(routesMap);
@@ -88,7 +91,7 @@ export default function BaseLayout({ children, hideNav = false }: React.PropsWit
   return (
     <View className="container">
       {!hideNav && getNavBar()}
-      <View className='content'>{children}</View>
+      <View className="content">{children}</View>
       <AtTabBar
         fixed
         backgroundColor="#ececec8"
